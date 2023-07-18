@@ -1,0 +1,39 @@
+{
+  "pages": [
+    {
+      "pageId": 1,
+      "title": "Page 1",
+      "inputs": [
+        { "type": "text", "label": "Name", "name": "name", "required": true },
+        { "type": "button", "label": "Next", "action": "next" }
+      ]
+    },
+    {
+      "pageId": 2,
+      "title": "Page 2",
+      "conditionalNavigation": {
+        "sourceQuestion": "name",
+        "requiredValue": "John",
+        "targetPageId": 3
+      },
+      "inputs": [
+        { "type": "checkbox", "label": "Option 1", "name": "option1" },
+        { "type": "checkbox", "label": "Option 2", "name": "option2" },
+        { "type": "button", "label": "Next", "action": "next" }
+      ]
+    },
+    {
+      "pageId": 3,
+      "title": "Page 3",
+      "inputs": [
+        {
+          "type": "radio",
+          "label": "Choose one option:",
+          "name": "selectedOption",
+          "options": ["Option A", "Option B", "Option C"]
+        },
+        { "type": "button", "label": "Submit", "action": "submit" }
+      ]
+    }
+  ]
+}
