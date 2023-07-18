@@ -1,0 +1,137 @@
+{
+  "pages": [
+    {
+      "pageId": 1,
+      "title": "Page 1",
+      "inputs": [
+        {
+          "type": "radio",
+          "label": "What is scope of aplication?",
+          "name": "scopeOfApplication",
+          "options": [
+            "Outside",
+            "Within"
+          ]
+        },
+        {
+          "type": "button",
+          "label": "Next",
+          "action": "next"
+        }
+      ]
+    },
+    {
+      "pageId": 2,
+      "title": "Page 2",
+      "inputs": [
+        {
+          "type": "radio",
+          "label": "Select the underground type?",
+          "name": "undergroundType",
+          "options": [
+            "Wood",
+            "Facade",
+            "Mat",
+            "Putz"
+          ]
+        },
+        {
+          "type": "button",
+          "label": "Next",
+          "action": "next"
+        }
+      ]
+    },
+    {
+      "pageId": 3,
+      "title": "Page 3",
+      "inputs": [
+        {
+          "type": "radio",
+          "label": "Do you know about opacity?",
+          "name": "opacityKnown",
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "type": "button",
+          "label": "Next",
+          "action": "next"
+        }
+      ]
+    },
+    {
+      "pageId": 4,
+      "title": "Page 4",
+      "conditionalNavigation": {
+        "sourceQuestion": "opacityKnown",
+        "requiredValue": "Yes",
+        "targetPageId": 6
+      },
+      "inputs": [
+        {
+          "type": "radio",
+          "label": "How strong?",
+          "name": "opacityStrength",
+          "options": [
+            "<95",
+            "95",
+            "98",
+            ">99.5"
+          ]
+        },
+        {
+          "type": "button",
+          "label": "Next",
+          "action": "next"
+        }
+      ]
+    },
+    {
+      "pageId": 5,
+      "title": "Page 5",
+      "conditionalNavigation": {
+        "sourceQuestion": "opacityKnown",
+        "requiredValue": "No",
+        "targetPageId": 6
+      },
+      "inputs": [
+        {
+          "type": "radio",
+          "label": "Which underground?",
+          "name": "undergroundIntensity",
+          "options": [
+            "Brighter",
+            "Darker"
+          ]
+        },
+        {
+          "type": "button",
+          "label": "Next",
+          "action": "next"
+        }
+      ]
+    },
+    {
+      "pageId": 6,
+      "title": "Page 6",
+      "inputs": [
+        {
+          "type": "radio",
+          "label": "What is color?",
+          "name": "hue",
+          "options": [
+            "Red",
+            "Blue",
+            "Green",
+            "Yellow",
+            "Black",
+            "White"
+          ]
+        }
+      ]
+    }
+  ]
+}

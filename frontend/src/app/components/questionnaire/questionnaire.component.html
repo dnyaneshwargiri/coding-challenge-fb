@@ -71,14 +71,6 @@
       </button>
 
       <button
-        *ngIf="currentPageIndex < questionnaireConfig.pages.length - 1"
-        (click)="goToNextPage()"
-        class="block w-full bg-blue-500 text-white px-4 py-2 mt-4"
-      >
-        Next
-      </button>
-
-      <button
         *ngIf="currentPageIndex === questionnaireConfig.pages.length - 1"
         (click)="onSubmit()"
         class="block w-full bg-green-500 text-white px-4 py-2 mt-4"
