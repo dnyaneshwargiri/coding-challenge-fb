@@ -9,50 +9,52 @@
       <div
         *ngFor="let input of questionnaireConfig.pages[currentPageIndex].inputs"
       >
-        <ng-container *ngIf="input.type === 'text'">
-          <label class="block mb-2">{{ input.label }}:</label>
-          <input
-            type="text"
-            name="{{ input.name }}"
-            [(ngModel)]="formData[input.name]"
-            [required]="input.required === true"
-            class="px-4 py-2 border w-full"
-          />
-        </ng-container>
-        <ng-container *ngIf="input.type === 'checkbox'">
-          <label class="block mb-2">
+        <div *ngIf="isInputVisible(input)">
+          <ng-container *ngIf="input.type === 'text'">
+            <label class="block mb-2">{{ input.label }}:</label>
             <input
-              type="checkbox"
+              type="text"
               name="{{ input.name }}"
               [(ngModel)]="formData[input.name]"
-              class="mr-2"
+              [required]="input.required === true"
+              class="px-4 py-2 border w-full"
             />
-            {{ input.label }}
-          </label>
-        </ng-container>
-        <ng-container *ngIf="input.type === 'radio'">
-          <label class="block mb-2">{{ input.label }}</label>
-          <div *ngFor="let option of input.options" class="mb-2">
-            <label>
+          </ng-container>
+          <ng-container *ngIf="input.type === 'checkbox'">
+            <label class="block mb-2">
               <input
-                type="radio"
+                type="checkbox"
                 name="{{ input.name }}"
                 [(ngModel)]="formData[input.name]"
-                [value]="option"
                 class="mr-2"
               />
-              {{ option }}
+              {{ input.label }}
             </label>
-          </div>
-        </ng-container>
-        <ng-container *ngIf="input.type === 'button'">
-          <button
-            (click)="goToNextPage()"
-            class="bg-blue-500 text-white px-4 py-2"
-          >
-            {{ input.label }}
-          </button>
-        </ng-container>
+          </ng-container>
+          <ng-container *ngIf="input.type === 'radio'">
+            <label class="block mb-2">{{ input.label }}</label>
+            <div *ngFor="let option of input.options" class="mb-2">
+              <label>
+                <input
+                  type="radio"
+                  name="{{ input.name }}"
+                  [(ngModel)]="formData[input.name]"
+                  [value]="option"
+                  class="mr-2"
+                />
+                {{ option }}
+              </label>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="input.type === 'button'">
+            <button
+              (click)="goToNextPage()"
+              class="bg-blue-500 text-white px-4 py-2"
+            >
+              {{ input.label }}
+            </button>
+          </ng-container>
+        </div>
       </div>
 
       <div

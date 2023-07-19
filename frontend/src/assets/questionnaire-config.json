@@ -27,13 +27,28 @@
         {
           "type": "radio",
           "label": "Select the underground type?",
-          "name": "undergroundType",
+          "name": "undergroundTypeOutside",
           "options": [
             "Wood",
-            "Facade",
+            "Facade"
+          ],
+          "condition": {
+            "sourceQuestion": "scopeOfApplication",
+            "requiredValue": "Outside"
+          }
+        },
+        {
+          "type": "radio",
+          "label": "Select the underground type?",
+          "name": "undergroundTypeWithin",
+          "options": [
             "Mat",
             "Putz"
-          ]
+          ],
+          "condition": {
+            "sourceQuestion": "scopeOfApplication",
+            "requiredValue": "Within"
+          }
         },
         {
           "type": "button",
@@ -66,8 +81,12 @@
       "pageId": 4,
       "title": "Page 4",
       "conditionalNavigation": {
-        "sourceQuestion": "opacityKnown",
-        "requiredValue": "Yes",
+        "conditions": [
+          {
+            "sourceQuestion": "opacityKnown",
+            "requiredValue": "Yes"
+          }
+        ],
         "targetPageId": 6
       },
       "inputs": [
@@ -93,8 +112,12 @@
       "pageId": 5,
       "title": "Page 5",
       "conditionalNavigation": {
-        "sourceQuestion": "opacityKnown",
-        "requiredValue": "No",
+        "conditions": [
+          {
+            "sourceQuestion": "opacityKnown",
+            "requiredValue": "No"
+          }
+        ],
         "targetPageId": 6
       },
       "inputs": [
@@ -119,17 +142,9 @@
       "title": "Page 6",
       "inputs": [
         {
-          "type": "radio",
+          "type": "text",
           "label": "What is color?",
-          "name": "hue",
-          "options": [
-            "Red",
-            "Blue",
-            "Green",
-            "Yellow",
-            "Black",
-            "White"
-          ]
+          "name": "hue"
         }
       ]
     }

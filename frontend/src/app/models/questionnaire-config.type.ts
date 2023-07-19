@@ -15,16 +15,26 @@ export type Input = {
   name: string;
   required?: boolean;
   options?: string[];
+  condition?:ConditionalCheck
 };
 
 export type ButtonInput = {
   type: "button";
   label: string;
   action: string;
+  condition?:ConditionalCheck
 };
 
 export type ConditionalNavigation = {
-  sourceQuestion: string;
-  requiredValue: string;
+  conditions: ConditionalCheck[];
   targetPageId: number;
+};
+
+export type ConditionalCheck = {
+  sourceQuestion: string;
+  requiredValue: string | boolean;
+};
+
+export type FormData = {
+  [key: string]: any;
 };

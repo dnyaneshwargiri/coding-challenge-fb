@@ -1,6 +1,6 @@
-import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { QuestionnaireConfig } from "./models/questionnaire-config.type";
+import { QuestionnaireService } from "./services/questionnaire.service";
 
 @Component({
   selector: "app-root",
@@ -10,14 +10,15 @@ import { QuestionnaireConfig } from "./models/questionnaire-config.type";
 export class AppComponent {
   title = "digitizer";
   questionnaireConfig: QuestionnaireConfig = { pages: [] };
-  constructor(private http: HttpClient) {
+  constructor(private questionnaireService: QuestionnaireService) {
     return;
   }
   ngOnInit() {
-    this.http
-      .get<QuestionnaireConfig>("/assets/questionnaire-config.json")
-      .subscribe((config) => {
-        this.questionnaireConfig = config;
-      });
+    this.getQuestionnaireConfig();
+  }
+  getQuestionnaireConfig() {
+    this.questionnaireService.getQuestionnaireConfig().subscribe((config) => {
+      this.questionnaireConfig = config;
+    });
   }
 }

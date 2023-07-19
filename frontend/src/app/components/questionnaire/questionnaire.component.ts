@@ -2,6 +2,10 @@ import { Component, Input } from "@angular/core";
 import {
   QuestionnaireConfig,
   Page,
+  FormData,
+  Input as InputConfig,
+  ConditionalCheck,
+  ButtonInput
 } from "../../models/questionnaire-config.type";
 
 @Component({
@@ -12,8 +16,7 @@ import {
 export class QuestionnaireComponent {
   @Input() questionnaireConfig: QuestionnaireConfig = { pages: [] };
   currentPageIndex: number = 0;
-  formData: { [key: string]: any } = {};
-
+  formData: FormData = {};
   goToNextPage() {
     const currentPage = this.questionnaireConfig.pages[this.currentPageIndex];
     const nextPageIndex = this.currentPageIndex + 1;
@@ -57,13 +60,37 @@ export class QuestionnaireComponent {
       return true;
     }
 
-    const sourceQuestion = page.conditionalNavigation.sourceQuestion;
-    const requiredValue = page.conditionalNavigation.requiredValue;
-    const userValue = this.formData[sourceQuestion];
+    const conditions = page.conditionalNavigation.conditions;
+
+    for (const condition of conditions) {
+      const sourceQuestion = condition.sourceQuestion;
+      const requiredValue = condition.requiredValue;
+      const userValue = this.getFormValue(sourceQuestion);
+
+      if (userValue !== requiredValue) {
+        return false; // If any condition fails, page is not accessible
+      }
+    }
+
+    return true; // All conditions are met, page is accessible
+  }
+
+  getFormValue(question: string): any {
+    return this.formData ? this.formData[question] : null;
+  }
+
+  isInputVisible(input: InputConfig | ButtonInput): boolean {
+    if (!input.condition) {
+      return true; // Show the input if there's no condition specified
+    }
+    
+    const condition = input.condition as ConditionalCheck;
+    const sourceQuestion = condition.sourceQuestion;
+    const requiredValue = condition.requiredValue;
+    const userValue = this.getFormValue(sourceQuestion);
 
     return userValue === requiredValue;
   }
-
   onSubmit() {
     console.log("Form submitted!");
   }
