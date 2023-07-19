@@ -5,18 +5,45 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import prisma from './prisma/prismaClient'; // Import the Prisma Client
+import dotenv from 'dotenv';
 
+// Load environment variables from the .env file
+dotenv.config();
 // The GraphQL schema
 const typeDefs = `#graphql
+  type Page {
+    id: Int!
+    title: String!
+    json: JSON!
+  }
+
+  scalar JSON
+
   type Query {
-    hello: String
+    pages: [Page!]!
+    pageById(id: Int!): Page
+  }
+
+  type Mutation {
+    createPage(title: String!, json: JSON!): Page!
   }
 `;
 
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    hello: () => 'world',
+    pages: async () => {
+      return prisma.page.findMany();
+    },
+    pageById: async (_, { id }) => {
+      return prisma.page.findUnique({ where: { id } });
+    },
+  },
+  Mutation: {
+    createPage: async (_, { title, json }) => {
+      return prisma.page.create({ data: { title, json } });
+    },
   },
 };
 

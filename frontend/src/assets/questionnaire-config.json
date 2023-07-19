@@ -2,16 +2,14 @@
   "pages": [
     {
       "pageId": 1,
-      "title": "Page 1",
+      "title": "Application Scope",
       "inputs": [
         {
           "type": "radio",
           "label": "What is scope of aplication?",
           "name": "scopeOfApplication",
-          "options": [
-            "Outside",
-            "Within"
-          ]
+          "required": true,
+          "options": ["Outside", "Within"]
         },
         {
           "type": "button",
@@ -22,29 +20,39 @@
     },
     {
       "pageId": 2,
-      "title": "Page 2",
+      "title": "Underground",
       "inputs": [
         {
-          "type": "radio",
-          "label": "Select the underground type?",
-          "name": "undergroundTypeOutside",
-          "options": [
-            "Wood",
-            "Facade"
-          ],
+          "type": "checkbox",
+          "label": "Wood",
+          "name": "wood",
           "condition": {
             "sourceQuestion": "scopeOfApplication",
             "requiredValue": "Outside"
           }
         },
         {
-          "type": "radio",
-          "label": "Select the underground type?",
-          "name": "undergroundTypeWithin",
-          "options": [
-            "Mat",
-            "Putz"
-          ],
+          "type": "checkbox",
+          "label": "Facade",
+          "name": "facade",
+          "condition": {
+            "sourceQuestion": "scopeOfApplication",
+            "requiredValue": "Outside"
+          }
+        },
+        {
+          "type": "checkbox",
+          "label": "Mat",
+          "name": "mat",
+          "condition": {
+            "sourceQuestion": "scopeOfApplication",
+            "requiredValue": "Within"
+          }
+        },
+        {
+          "type": "checkbox",
+          "label": "Putz",
+          "name": "putz",
           "condition": {
             "sourceQuestion": "scopeOfApplication",
             "requiredValue": "Within"
@@ -59,16 +67,14 @@
     },
     {
       "pageId": 3,
-      "title": "Page 3",
+      "title": "Opacity",
+      "required": true,
       "inputs": [
         {
           "type": "radio",
           "label": "Do you know about opacity?",
           "name": "opacityKnown",
-          "options": [
-            "Yes",
-            "No"
-          ]
+          "options": ["Yes", "No"]
         },
         {
           "type": "button",
@@ -79,7 +85,8 @@
     },
     {
       "pageId": 4,
-      "title": "Page 4",
+      "title": "Intensity level",
+      "required": true,
       "conditionalNavigation": {
         "conditions": [
           {
@@ -94,12 +101,7 @@
           "type": "radio",
           "label": "How strong?",
           "name": "opacityStrength",
-          "options": [
-            "<95",
-            "95",
-            "98",
-            ">99.5"
-          ]
+          "options": ["<95", "95", "98", ">99.5"]
         },
         {
           "type": "button",
@@ -110,7 +112,8 @@
     },
     {
       "pageId": 5,
-      "title": "Page 5",
+      "title": "Vue",
+      "required": true,
       "conditionalNavigation": {
         "conditions": [
           {
@@ -125,10 +128,7 @@
           "type": "radio",
           "label": "Which underground?",
           "name": "undergroundIntensity",
-          "options": [
-            "Brighter",
-            "Darker"
-          ]
+          "options": ["Brighter", "Darker"]
         },
         {
           "type": "button",
@@ -139,12 +139,52 @@
     },
     {
       "pageId": 6,
-      "title": "Page 6",
+      "title": "Recommenddation",
       "inputs": [
         {
-          "type": "text",
-          "label": "What is color?",
-          "name": "hue"
+          "type": "recommendation",
+          "label": "Recommended Color(s): ",
+          "name": "recommendation",
+          "required": false,
+          "recommendationValue": "White, Yellow, Blue",
+          "condition": {
+            "sourceQuestion": "undergroundIntensity",
+            "requiredValue": "Brighter"
+          }
+        },
+        {
+          "type": "recommendation",
+          "label": "Recommendation: ",
+          "name": "recommendation",
+          "required": false,
+          "recommendationValue": "Black, Red, Green",
+          "condition": {
+            "sourceQuestion": "undergroundIntensity",
+            "requiredValue": "Darker"
+          }
+        },
+        {
+          "type": "recommendation",
+          "label": "Recommendation: ",
+          "name": "recommendation",
+          "required": false,
+          "recommendationValue": "White, Yellow, Blue",
+          "condition": {
+            "sourceQuestion": "opacityStrength",
+            "requiredValue": ["<95", "95"]
+          }
+        },
+        {
+          "type": "recommendation",
+          "label": "Recommendation: ",
+          "name": "recommendation",
+          "required": false,
+          "recommendationValue": "Black, Red, Green",
+          "condition": {
+            "type": "multipleCheck",
+            "sourceQuestion": "opacityStrength",
+            "requiredValue": ["98", ">99.5"]
+          }
         }
       ]
     }

@@ -10,19 +10,20 @@ export type Page = {
 };
 
 export type Input = {
-  type: "text" | "checkbox" | "radio";
+  type: "text" | "checkbox" | "radio" | "recommendation";
   label: string;
   name: string;
   required?: boolean;
   options?: string[];
-  condition?:ConditionalCheck
+  recommendationValue?: string;
+  condition?: ConditionalCheck;
 };
 
 export type ButtonInput = {
   type: "button";
   label: string;
   action: string;
-  condition?:ConditionalCheck
+  condition?: ConditionalCheck;
 };
 
 export type ConditionalNavigation = {
@@ -31,6 +32,7 @@ export type ConditionalNavigation = {
 };
 
 export type ConditionalCheck = {
+  type?: string;
   sourceQuestion: string;
   requiredValue: string | boolean;
 };

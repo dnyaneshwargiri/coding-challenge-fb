@@ -25,6 +25,7 @@
               <input
                 type="checkbox"
                 name="{{ input.name }}"
+                [required]="input.required === true"
                 [(ngModel)]="formData[input.name]"
                 class="mr-2"
               />
@@ -38,6 +39,7 @@
                 <input
                   type="radio"
                   name="{{ input.name }}"
+                  [required]="input.required === true"
                   [(ngModel)]="formData[input.name]"
                   [value]="option"
                   class="mr-2"
@@ -46,9 +48,15 @@
               </label>
             </div>
           </ng-container>
+          <ng-container *ngIf="input.type === 'recommendation'">
+            <label>{{ input.label }}</label
+            ><br />
+            <input type="text" [value]="input.recommendationValue" readonly />
+          </ng-container>
           <ng-container *ngIf="input.type === 'button'">
             <button
               (click)="goToNextPage()"
+              [disabled]="!areRequiredInputsFilled()"
               class="bg-blue-500 text-white px-4 py-2"
             >
               {{ input.label }}

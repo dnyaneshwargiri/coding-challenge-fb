@@ -16,7 +16,7 @@ export class AppComponent {
   ngOnInit() {
     this.getQuestionnaireConfig();
   }
-  getQuestionnaireConfig() {
+  public getQuestionnaireConfig(): void {
     this.questionnaireService.getQuestionnaireConfig().subscribe((config) => {
       this.questionnaireConfig = config;
     });

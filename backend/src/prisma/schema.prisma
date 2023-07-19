@@ -12,5 +12,7 @@ generator client {
 model Page {
   id Int @id @default(autoincrement())
     // Have the defintion of a page here
+  title String
+  json Json
 }
 

@@ -5,7 +5,7 @@ import {
   FormData,
   Input as InputConfig,
   ConditionalCheck,
-  ButtonInput
+  ButtonInput,
 } from "../../models/questionnaire-config.type";
 
 @Component({
@@ -17,9 +17,27 @@ export class QuestionnaireComponent {
   @Input() questionnaireConfig: QuestionnaireConfig = { pages: [] };
   currentPageIndex: number = 0;
   formData: FormData = {};
-  goToNextPage() {
+
+  public goToNextPage(): void {
     const currentPage = this.questionnaireConfig.pages[this.currentPageIndex];
     const nextPageIndex = this.currentPageIndex + 1;
+    const requiredInputs = currentPage.inputs.filter(
+      (input) => (input as InputConfig).required
+    );
+
+    if (
+      requiredInputs.every(
+        (input) => this.getFormValue((input as InputConfig).name) !== ""
+      )
+    ) {
+      const nextPageIndex = this.currentPageIndex + 1;
+      if (
+        nextPageIndex < this.questionnaireConfig.pages.length &&
+        this.isPageAccessible(currentPage)
+      ) {
+        this.currentPageIndex = nextPageIndex;
+      }
+    }
 
     if (this.isPageAccessible(currentPage)) {
       let nextAccessiblePageIndex =
@@ -34,13 +52,18 @@ export class QuestionnaireComponent {
     }
   }
 
-  goToPreviousPage() {
+  public goToPreviousPage(): void {
     if (this.currentPageIndex > 0) {
       this.currentPageIndex--;
     }
   }
 
-  getNextAccessiblePageIndex(startIndex: number): number | null {
+  /**
+   *
+   * @param startIndex
+   * @returns nextPageIndex
+   */
+  public getNextAccessiblePageIndex(startIndex: number): number | null {
     if (startIndex >= this.questionnaireConfig.pages.length) {
       return null;
     }
@@ -55,7 +78,12 @@ export class QuestionnaireComponent {
     return null;
   }
 
-  isPageAccessible(page: Page): boolean {
+  /**
+   *
+   * @param page
+   * @returns isPageAccessible
+   */
+  public isPageAccessible(page: Page): boolean {
     if (!page.conditionalNavigation) {
       return true;
     }
@@ -75,23 +103,58 @@ export class QuestionnaireComponent {
     return true; // All conditions are met, page is accessible
   }
 
-  getFormValue(question: string): any {
+  /**
+   *
+   * @param question
+   * @returns questionResponse
+   */
+  public getFormValue(question: string): any {
     return this.formData ? this.formData[question] : null;
   }
 
-  isInputVisible(input: InputConfig | ButtonInput): boolean {
+  /**
+   *
+   * @param input
+   * @returns isInputVisible
+   */
+  public isInputVisible(input: InputConfig | ButtonInput): boolean {
     if (!input.condition) {
       return true; // Show the input if there's no condition specified
     }
-    
-    const condition = input.condition as ConditionalCheck;
-    const sourceQuestion = condition.sourceQuestion;
-    const requiredValue = condition.requiredValue;
-    const userValue = this.getFormValue(sourceQuestion);
 
-    return userValue === requiredValue;
+    const condition = input.condition as ConditionalCheck;
+
+    if (condition.type === "multipleCheck") {
+      const sourceQuestion = condition.sourceQuestion;
+      const requiredValue = condition.requiredValue;
+      const userValue = this.getFormValue(sourceQuestion);
+
+      return userValue === requiredValue;
+    } else {
+      const sourceQuestion = condition.sourceQuestion;
+      const requiredValue = condition.requiredValue;
+      const userValue = this.getFormValue(sourceQuestion);
+
+      return userValue === requiredValue;
+    }
   }
-  onSubmit() {
+
+  /**
+   *
+   * @returns areRequiredInputsFilled
+   */
+  public areRequiredInputsFilled(): boolean {
+    const currentPage = this.questionnaireConfig.pages[this.currentPageIndex];
+    const requiredInputs = currentPage.inputs.filter(
+      (input) => (input as InputConfig).required
+    );
+
+    return requiredInputs.every(
+      (input) => this.getFormValue((input as InputConfig).name) !== ""
+    );
+  }
+
+  public onSubmit(): void {
     console.log("Form submitted!");
   }
 }
