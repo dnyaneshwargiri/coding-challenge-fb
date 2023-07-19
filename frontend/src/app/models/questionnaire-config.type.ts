@@ -34,7 +34,7 @@ export type ConditionalNavigation = {
 export type ConditionalCheck = {
   type?: string;
   sourceQuestion: string;
-  requiredValue: string | boolean;
+  requiredValue: string | boolean | string[];
 };
 
 export type FormData = {

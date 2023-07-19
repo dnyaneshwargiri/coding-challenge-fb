@@ -123,20 +123,15 @@ export class QuestionnaireComponent {
     }
 
     const condition = input.condition as ConditionalCheck;
+    const sourceQuestion = condition.sourceQuestion;
+    const requiredValue = condition.requiredValue;
+    const userValue = this.getFormValue(sourceQuestion);
 
     if (condition.type === "multipleCheck") {
-      const sourceQuestion = condition.sourceQuestion;
-      const requiredValue = condition.requiredValue;
-      const userValue = this.getFormValue(sourceQuestion);
-
-      return userValue === requiredValue;
-    } else {
-      const sourceQuestion = condition.sourceQuestion;
-      const requiredValue = condition.requiredValue;
-      const userValue = this.getFormValue(sourceQuestion);
-
-      return userValue === requiredValue;
+      return Object.values(requiredValue).includes(userValue);
     }
+
+    return userValue === requiredValue;
   }
 
   /**
@@ -150,7 +145,7 @@ export class QuestionnaireComponent {
     );
 
     return requiredInputs.every(
-      (input) => this.getFormValue((input as InputConfig).name) !== ""
+      (input) => this.getFormValue((input as InputConfig).name) !== undefined
     );
   }
 

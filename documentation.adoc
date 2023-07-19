@@ -1,0 +1,205 @@
+= Project Documentation
+
+:toc: left
+:toclevels: 2
+
+== Frontend
+
+=== Introduction
+
+This section provides an overview of the frontend logic of the application. The frontend is built using Angular, a popular TypeScript-based framework for building web applications.
+
+=== Project Structure
+
+The frontend project is structured as follows:
+
+[source]
+----
+project-root/
+  |-- src/
+  |     |-- app/
+  |     |     |-- components/         // Contains reusable components
+  |     |     |-- models/             // Contains TypeScript interfaces/models
+  |     |     |-- services/           // Contains Angular services for data handling
+  |     |     |-- app.component.ts    // Main component for the application
+  |     |     |-- app.module.ts       // Main module for the application
+  |     |-- assets/                   // Contains static assets (e.g., JSON files)
+----
+
+=== Code Overview
+
+The main components and services in the frontend are:
+
+1. app.component.ts: The main component that handles the questionnaire functionality.
+2. app.module.ts: The main module that defines the application's dependencies and imports.
+3. models/: Contains TypeScript interfaces/models for data structures used in the application.
+4. services/: Contains Angular services responsible for fetching questionnaire data from the backend.
+
+=== Workflow
+
+The frontend logic follows the following workflow:
+
+1. On application load, `app.component.ts` initializes the questionnaire by calling the `getQuestionnaireConfig()` method from the `QuestionnaireService`.
+2. `QuestionnaireService` sends an HTTP request to the backend API endpoint to fetch the questionnaire configuration from the JSON file.
+3. Once the questionnaire configuration is obtained, `app.component.ts` renders the questionnaire dynamically based on the received JSON data.
+4. Users can interact with the questionnaire, filling out input fields and selecting options.
+5. Based on the user's input, the "Next" button becomes active or disabled, depending on whether required inputs are filled or not.
+6. Users can navigate through the questionnaire using the "Next" and "Previous" buttons.
+7. When the user submits the questionnaire, the final data is sent to the backend for processing.
+
+== Backend
+
+=== Introduction
+
+This section provides an overview of the backend logic of the application. The backend is built using Node.js with a Prisma API connected to a PostgreSQL database.
+
+=== Project Structure
+
+The backend project is structured as follows:
+
+[source]
+----
+project-root/
+  |-- src/
+  |     |-- prisma/
+  |     |     |-- schema.prisma      // Contains the Prisma schema definition
+
+              |-- prismaClient.ts    // Initialization of prisma client
+  |     |-- types/                   // Exports all types
+  
+  |     |-- tests/                   // Contains all test files
+              |-- test.ts               
+  |-- .env                           // Contains environment variables (e.g., DATABASE_URL)
+----
+
+=== Code Overview
+
+The main components and resolvers in the backend are:
+
+1. db/schema.prisma: Contains the Prisma schema definition for the Page model and its properties.
+2. resolvers/Mutation.ts: Contains GraphQL mutation resolvers for creating new pages with questionnaire data.
+3. resolvers/Query.ts: Contains GraphQL query resolvers for fetching the questionnaire configuration from the database.
+
+=== Workflow
+
+The backend logic follows the following workflow:
+
+1. On the frontend's request to fetch the questionnaire configuration, the backend GraphQL server handles the request.
+2. GraphQL query resolver `pageById` in `resolvers/Query.ts` is called to fetch the questionnaire data from the database based on the provided page ID.
+3. The backend sends the questionnaire configuration as a JSON response to the frontend.
+
+== Conditional Logic of Inputs and Pages
+
+=== Introduction
+
+This section explains the conditional logic implemented in the questionnaire application to control the visibility of inputs and pages based on user input and previous selections.
+
+=== Conditional Logic for Inputs
+
+In the questionnaire JSON configuration, each input can have a `condition` property that defines the visibility of that input. The `condition` property is an object containing the following properties:
+
+- `sourceQuestion`: The question ID of the input that affects the visibility of this input.
+- `sourcePage`: The page ID from which the `sourceQuestion` is located.
+- `value`: The expected value of the `sourceQuestion` for this input to be visible.
+
+If the user's selection for the `sourceQuestion` matches the `value`, the input will be visible; otherwise, it will be hidden.
+
+[source, json]
+----
+{
+  "pages": [
+    {
+      "id": 1,
+      "title": "Page 1",
+      "inputs": [
+        {
+          "id": 1,
+          "type": "text",
+          "label": "Name",
+          "condition": {
+            "sourceQuestion": 2,
+            "sourcePage": 1,
+            "value": "John"
+          }
+        },
+        {
+          "id": 2,
+          "type": "select",
+          "label": "Gender",
+          "options": ["Male", "Female"]
+        }
+      ]
+    }
+  ]
+}
+----
+
+In the above example, the input with ID 1 (Name) will only be visible if the user selects "John" as the answer for input with ID 2 (Gender) on Page 1.
+
+=== Conditional Navigation between Pages
+
+In addition to conditional inputs, the questionnaire also has conditional navigation between pages. This means that certain pages are only accessible based on the user's input on previous pages.
+
+Each page can have a `conditionalNavigation` property, which defines the conditions for navigating to other pages. The `conditionalNavigation` property is an array of objects, where each object contains the following properties:
+
+- `sourceQuestion`: The question ID on the current page whose value affects the navigation.
+- `sourcePage`: The ID of the current page.
+- `value`: The expected value of the `sourceQuestion` for the navigation to the target page.
+- `targetPage`: The ID of the page to navigate to if the condition is met.
+
+If the user's selection for the `sourceQuestion` on the current page matches the `value`, the user will be navigated to the `targetPage`.
+
+[source, json]
+----
+{
+  "pages": [
+    {
+      "id": 1,
+      "title": "Page 1",
+      "inputs": [
+        {
+          "id": 1,
+          "type": "select",
+          "label": "Age Group",
+          "options": ["Child", "Adult"]
+        }
+      ],
+      "conditionalNavigation": [
+        {
+          "sourceQuestion": 1,
+          "sourcePage": 1,
+          "value": "Child",
+          "targetPage": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Page 2",
+      "inputs": [
+        {
+          "id": 2,
+          "type": "text",
+          "label": "Parent's Name",
+          "condition": {
+            "sourceQuestion": 1,
+            "sourcePage": 1,
+            "value": "Child"
+          }
+        }
+      ]
+    }
+  ]
+}
+----
+
+In the above example, if the user selects "Child" as the answer for the input with ID 1 (Age Group) on Page 1, they will be navigated to Page 2. On Page 2, the input with ID 2 (Parent's Name) will be visible because the user selected "Child" on the previous page.
+
+=== Conclusion
+
+The conditional logic implemented in the questionnaire application allows for dynamic visibility of inputs and conditional navigation between pages based on user input. By using the `condition` property for inputs and the `conditionalNavigation` property for pages in the questionnaire JSON configuration, the application provides a customized user experience based on the user's selections and inputs.
+
+
+== End
+
+This documentation provides an overview of the frontend and backend logic and explains the workflow of the application. Developers can use this documentation to understand how the code is structured and how the different components and services interact to create a dynamic questionnaire application.

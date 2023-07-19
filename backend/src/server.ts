@@ -7,7 +7,9 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import prisma from './prisma/prismaClient'; // Import the Prisma Client
 import dotenv from 'dotenv';
+import { CreatePageArgs } from './types/types';
 
+const app = express();
 // Load environment variables from the .env file
 dotenv.config();
 // The GraphQL schema
@@ -36,21 +38,23 @@ const resolvers = {
     pages: async () => {
       return prisma.page.findMany();
     },
-    pageById: async (_, { id }) => {
+    pageById: async (_: any, { id }: { id: number }) => {
       return prisma.page.findUnique({ where: { id } });
     },
   },
   Mutation: {
-    createPage: async (_, { title, json }) => {
+    createPage: async (_: any, { title, json }: CreatePageArgs) => {
       return prisma.page.create({ data: { title, json } });
     },
   },
 };
 
 async function main() {
-  const app = express();
   const httpServer = http.createServer(app);
-
+  // Define a simple route for testing
+  app.get('/helloworld', (req, res) => {
+    res.send('Hello, world!');
+  });
   // Set up Apollo Server
   const server = new ApolloServer({
     typeDefs,
@@ -70,3 +74,4 @@ async function main() {
 }
 
 main();
+export { app };

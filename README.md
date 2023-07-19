@@ -44,6 +44,10 @@ Install dependencies
 Start the server
 
 ```bash
+  npx prisma generate --schema=./src/prisma/schema.prisma
+```
+
+```bash
   npm run start
 ```
 

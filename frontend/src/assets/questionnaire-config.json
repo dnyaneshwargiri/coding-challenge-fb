@@ -9,7 +9,10 @@
           "label": "What is scope of aplication?",
           "name": "scopeOfApplication",
           "required": true,
-          "options": ["Outside", "Within"]
+          "options": [
+            "Outside",
+            "Within"
+          ]
         },
         {
           "type": "button",
@@ -74,7 +77,11 @@
           "type": "radio",
           "label": "Do you know about opacity?",
           "name": "opacityKnown",
-          "options": ["Yes", "No"]
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
         },
         {
           "type": "button",
@@ -101,7 +108,13 @@
           "type": "radio",
           "label": "How strong?",
           "name": "opacityStrength",
-          "options": ["<95", "95", "98", ">99.5"]
+          "required": true,
+          "options": [
+            "<95",
+            "95",
+            "98",
+            ">99.5"
+          ]
         },
         {
           "type": "button",
@@ -128,7 +141,10 @@
           "type": "radio",
           "label": "Which underground?",
           "name": "undergroundIntensity",
-          "options": ["Brighter", "Darker"]
+          "options": [
+            "Brighter",
+            "Darker"
+          ]
         },
         {
           "type": "button",
@@ -139,7 +155,7 @@
     },
     {
       "pageId": 6,
-      "title": "Recommenddation",
+      "title": "Recommendation",
       "inputs": [
         {
           "type": "recommendation",
@@ -170,8 +186,12 @@
           "required": false,
           "recommendationValue": "White, Yellow, Blue",
           "condition": {
+            "type": "multipleCheck",
             "sourceQuestion": "opacityStrength",
-            "requiredValue": ["<95", "95"]
+            "requiredValue": [
+              "<95",
+              "95"
+            ]
           }
         },
         {
@@ -183,7 +203,10 @@
           "condition": {
             "type": "multipleCheck",
             "sourceQuestion": "opacityStrength",
-            "requiredValue": ["98", ">99.5"]
+            "requiredValue": [
+              "98",
+              ">99.5"
+            ]
           }
         }
       ]
