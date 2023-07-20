@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { FormsModule } from "@angular/forms";
-import { RouterTestingModule } from "@angular/router/testing";
 import { of } from "rxjs";
 
 import { QuestionnaireComponent } from "./questionnaire.component";
@@ -104,19 +103,24 @@ describe("QuestionnaireComponent", () => {
     ],
   };
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // Create a mock service
     mockQuestionnaireService = {
       getQuestionnaireConfig: () => of(mockQuestionnaireConfig),
     };
 
     TestBed.configureTestingModule({
       declarations: [QuestionnaireComponent],
-      imports: [HttpClientTestingModule, FormsModule, RouterTestingModule],
+      imports: [FormsModule, HttpClientTestingModule],
       providers: [
         { provide: QuestionnaireService, useValue: mockQuestionnaireService },
       ],
     }).compileComponents();
-  }));
+
+    fixture = TestBed.createComponent(QuestionnaireComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(QuestionnaireComponent);
@@ -129,10 +133,8 @@ describe("QuestionnaireComponent", () => {
   });
 
   it('should disable the "Next" button when required inputs are not filled', async () => {
-    // Assuming the first page is at index 0
     component.currentPageIndex = 0;
     fixture.detectChanges();
-    // Make sure that the required input element exists in the template
     await fixture.whenStable();
     const requiredInput =
       fixture.nativeElement.querySelector("input[required]");
@@ -142,5 +144,110 @@ describe("QuestionnaireComponent", () => {
     fixture.detectChanges(); // Update the component's view
     const button = fixture.nativeElement.querySelector("button");
     expect(button.disabled).toBe(true);
+  });
+
+  it("should navigate to the next page when required inputs are filled and the page is accessible", () => {
+    component.questionnaireConfig = mockQuestionnaireConfig;
+    component.currentPageIndex = 0; // Assuming the first page is at index 0
+    const requiredInputName = "your-required-input-name";
+    component.formData[requiredInputName] = "some value";
+    // Spy on the isPageAccessible method to return true
+    const isPageAccessibleSpy = spyOn(
+      component,
+      "isPageAccessible"
+    ).and.returnValue(true);
+    component.goToNextPage();
+    fixture.detectChanges();
+    expect(component.currentPageIndex).toBe(1); // Assuming the next page is at index 1
+    expect(isPageAccessibleSpy).toHaveBeenCalled();
+  });
+
+  it("should not navigate to the next page when required inputs are not filled", () => {
+    component.questionnaireConfig = mockQuestionnaireConfig;
+    component.currentPageIndex = 0; // Assuming the first page is at index 0
+    const isPageAccessibleSpy = spyOn(
+      component,
+      "isPageAccessible"
+    ).and.returnValue(true);
+    component.goToNextPage();
+    fixture.detectChanges();
+    expect(component.currentPageIndex).toBe(0); // Should remain on the same page
+    expect(isPageAccessibleSpy).toHaveBeenCalled();
+  });
+
+  it("should not navigate to the next page when the current page is not accessible", () => {
+    component.questionnaireConfig = mockQuestionnaireConfig;
+    component.currentPageIndex = 0; // Assuming the first page is at index 0
+    const requiredInputName = "your-required-input-name";
+    component.formData[requiredInputName] = "some value";
+    const isPageAccessibleSpy = spyOn(
+      component,
+      "isPageAccessible"
+    ).and.returnValue(false);
+    component.goToNextPage();
+    fixture.detectChanges();
+    expect(component.currentPageIndex).toBe(0); // Should remain on the same page
+    expect(isPageAccessibleSpy).toHaveBeenCalled();
+  });
+
+  it("should navigate to the next accessible page when required inputs are filled and the current page is not accessible", () => {
+    component.questionnaireConfig = mockQuestionnaireConfig;
+    component.currentPageIndex = 0; // Assuming the first page is at index 0
+    const requiredInputName = "your-required-input-name";
+    component.formData[requiredInputName] = "some value";
+    const isPageAccessibleSpy = spyOn(
+      component,
+      "isPageAccessible"
+    ).and.callFake((page) => {
+      return page === component.questionnaireConfig.pages[0] ? false : true;
+    });
+    const getNextAccessiblePageIndexSpy = spyOn(
+      component,
+      "getNextAccessiblePageIndex"
+    ).and.returnValue(1);
+    component.goToNextPage();
+    fixture.detectChanges();
+    expect(component.currentPageIndex).toBe(1);
+    expect(isPageAccessibleSpy).toHaveBeenCalledTimes(2);
+    expect(getNextAccessiblePageIndexSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("should log a message when no accessible page is found based on the input", () => {
+    // Mock questionnaireConfig and currentPageIndex to simulate a valid scenario
+    component.questionnaireConfig = mockQuestionnaireConfig;
+    component.currentPageIndex = 0; // Assuming the first page is at index 0
+    const isPageAccessibleSpy = spyOn(
+      component,
+      "isPageAccessible"
+    ).and.returnValue(false);
+    const getNextAccessiblePageIndexSpy = spyOn(
+      component,
+      "getNextAccessiblePageIndex"
+    ).and.returnValue(null);
+    const consoleLogSpy = spyOn(console, "log");
+    component.goToNextPage();
+    fixture.detectChanges();
+    expect(component.currentPageIndex).toBe(0);
+    expect(isPageAccessibleSpy).toHaveBeenCalledTimes(1);
+    expect(getNextAccessiblePageIndexSpy).toHaveBeenCalledTimes(1);
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      "No accessible page found based on the input."
+    );
+  });
+
+  it("should navigate to the previous page if the current page index is greater than 0", () => {
+    component.questionnaireConfig = mockQuestionnaireConfig;
+    component.currentPageIndex = 1; // Assuming the current page is at index 1
+    component.goToPreviousPage();
+    fixture.detectChanges();
+    expect(component.currentPageIndex).toBe(0);
+  });
+
+  it("should not navigate to the previous page if the current page index is 0", () => {
+    component.questionnaireConfig = mockQuestionnaireConfig;
+    component.currentPageIndex = 0; // Assuming the current page is at index 0
+    component.goToPreviousPage();
+    fixture.detectChanges();
+    expect(component.currentPageIndex).toBe(0);
   });
 });

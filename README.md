@@ -42,14 +42,22 @@ Install dependencies
 ```
 
 Start the server
-
+ 
 ```bash
   npx prisma generate --schema=./src/prisma/schema.prisma
 ```
 
 ```bash
-  npm run start
+  npx prisma db push --schema=./src/prisma/schema.prisma
 ```
+
+```bash
+  npm run devStart
+   /**OR*/ 
+  npm run start
+
+```
+
 
 
 ## Running Tests
@@ -63,9 +71,13 @@ To run tests, run the following command in either frontend or backend directory.
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://raw.githubusercontent.com/dnyaneshwargiri/coding-challenge-fb/main/screenshots/question%20page-1.png)
+
+![App Screenshot](https://raw.githubusercontent.com/dnyaneshwargiri/coding-challenge-fb/main/screenshots/question%20page-2.png)
 
 
+
+![App Screenshot](https://raw.githubusercontent.com/dnyaneshwargiri/coding-challenge-fb/main/screenshots/recommend%20page.png)
 ## Environment Variables
 
 To run this project on live database, you will need to add the following environment variables to your .env file
@@ -76,7 +88,7 @@ To run this project on live database, you will need to add the following environ
 
 ## Documentation
 
-[Documentation](https://linktodocumentation)
+[Technical Workflow](https://github.com/dnyaneshwargiri/coding-challenge-fb/blob/main/documentation.adoc)
 
 
 ## Tech Stack

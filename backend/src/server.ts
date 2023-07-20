@@ -7,44 +7,68 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import prisma from './prisma/prismaClient'; // Import the Prisma Client
 import dotenv from 'dotenv';
-import { CreatePageArgs } from './types/types';
-
 const app = express();
 // Load environment variables from the .env file
 dotenv.config();
+
 // The GraphQL schema
 const typeDefs = `#graphql
-  type Page {
-    id: Int!
-    title: String!
-    json: JSON!
-  }
+type Questionnaire {
+  id: Int
+  title: String
+  pages: [Page]
+}
 
-  scalar JSON
+type Page {
+  id: Int
+  title: String
+  inputs: [Input]
+  conditionalNavigation: ConditionalNavigation
+}
 
-  type Query {
-    pages: [Page!]!
-    pageById(id: Int!): Page
-  }
+type Input {
+  id: Int
+  type: String
+  label: String
+  name: String
+  required: Boolean
+  options: [String]
+  recommendationValue: String
+  condition: ConditionalCheck
+}
 
-  type Mutation {
-    createPage(title: String!, json: JSON!): Page!
-  }
+type ButtonInput {
+  id: Int
+  type: String
+  label: String
+  action: String
+  condition: ConditionalCheck
+}
+
+type ConditionalNavigation {
+  id: Int
+  conditions: [ConditionalCheck]
+  targetPageId: Int
+}
+
+type ConditionalCheck {
+  id: Int
+  type: String
+  sourceQuestion: String
+  requiredValue: String
+}
+
+type Query {
+  getQuestionnaireConfig: Questionnaire
+}
 `;
 
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    pages: async () => {
-      return prisma.page.findMany();
-    },
-    pageById: async (_: any, { id }: { id: number }) => {
-      return prisma.page.findUnique({ where: { id } });
-    },
-  },
-  Mutation: {
-    createPage: async (_: any, { title, json }: CreatePageArgs) => {
-      return prisma.page.create({ data: { title, json } });
+    getQuestionnaireConfig: async () => {
+      const pages = await prisma.page.findMany({});
+      return { pages };
     },
   },
 };
@@ -64,7 +88,6 @@ async function main() {
   await server.start();
 
   app.use(cors(), bodyParser.json(), expressMiddleware(server));
-
   await new Promise((resolve) =>
     httpServer.listen({ port: 4000 }, () => {
       resolve(undefined);

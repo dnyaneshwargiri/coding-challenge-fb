@@ -1,5 +1,3 @@
-// Placeholder Prisma schema file
-// Define your Prisma database schema here
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -9,10 +7,51 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Page {
-  id Int @id @default(autoincrement())
-    // Have the defintion of a page here
+model Questionnaire {
+  id    Int    @id
   title String
-  json Json
+  pages Page[]
 }
 
+model Page {
+  id              Int           @id
+  title           String
+  questionnaireId Int
+  questionnaire   Questionnaire @relation(fields: [questionnaireId], references: [id])
+  inputs          Input[]
+}
+
+model Input {
+  id                  Int      @id
+  type                String
+  label               String
+  name                String
+  required            Boolean?
+  options             String[]
+  recommendationValue String?
+  pageId              Int
+  page                Page     @relation(fields: [pageId], references: [id])
+}
+
+model ButtonInput {
+  id     Int    @id
+  type   String
+  label  String
+  action String
+  pageId Int
+}
+
+model ConditionalNavigation {
+  id           Int  @id
+  targetPageId Int
+  pageId       Int
+  conditions   Json
+}
+
+model ConditionalCheck {
+  id             Int     @id
+  type           String?
+  sourceQuestion String
+  requiredValue  String?
+  pageId         Int
+}
