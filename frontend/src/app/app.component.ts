@@ -14,12 +14,21 @@ export class AppComponent {
     return;
   }
   ngOnInit() {
-    this.getQuestionnaireConfig();
+    this.getQuestionnaireConfigFile();
+    //this.getQuestionnaireConfig();
+  }
+  public getQuestionnaireConfigFile(): void {
+    this.questionnaireService
+      .getQuestionnaireConfigFile()
+      .subscribe((config) => {
+        this.questionnaireConfig = config;
+      });
   }
   public getQuestionnaireConfig(): void {
-    this.questionnaireService.getQuestionnaireConfig().subscribe((response:any) => {
-      //this.questionnaireConfig = config;
-      this.questionnaireConfig = response.questionnaire;
-    });
+    this.questionnaireService
+      .getQuestionnaireConfig()
+      .subscribe((questionnaire:any) => {
+        this.questionnaireConfig = questionnaire;
+      });
   }
 }

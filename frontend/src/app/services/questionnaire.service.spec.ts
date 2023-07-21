@@ -116,7 +116,7 @@ describe("Service: Questionnaire", () => {
     const mockConfig: QuestionnaireConfig = mockData;
 
     // Set up the HTTP response
-    questionnaireService.getQuestionnaireConfig().subscribe((config) => {
+    questionnaireService.getQuestionnaireConfigFile().subscribe((config) => {
       expect(config).toEqual(mockConfig);
     });
 

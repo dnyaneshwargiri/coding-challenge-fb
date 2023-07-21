@@ -2,7 +2,7 @@ import { gql } from "apollo-angular";
 
 const GET_QUESTIONNARIE = gql`
   query GetQuestionnarie {
-    questionnaire {
+    Questionnaire {
       id
       title
       pages

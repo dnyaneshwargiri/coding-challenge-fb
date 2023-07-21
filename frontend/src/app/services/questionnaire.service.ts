@@ -9,15 +9,14 @@ import { GET_QUESTIONNARIE } from "../graphql.operations";
   providedIn: "root",
 })
 export class QuestionnaireService {
-  constructor(private apollo: Apollo) {}
-  
-  //this is from local file
+  constructor(private apollo: Apollo, private http: HttpClient) {}
 
-  // getQuestionnaireConfig(): Observable<QuestionnaireConfig> {
-  //   return this.http.get<QuestionnaireConfig>(
-  //     "/assets/questionnaire-config.json"
-  //   );
-  // }
+  //this is from local file
+  getQuestionnaireConfigFile(): Observable<QuestionnaireConfig> {
+    return this.http.get<QuestionnaireConfig>(
+      "/assets/questionnaire-config.json"
+    );
+  }
 
   getQuestionnaireConfig(): Observable<unknown> {
     return this.apollo.watchQuery({

@@ -1,4 +1,5 @@
-export type CreatePageArgs = {
+export type createQuestionnaireInput = {
+  id: number;
   title: string;
-  json: string; // Assuming json is of string type, change it if it's of another type
+  pages: any;
 };

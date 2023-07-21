@@ -106,7 +106,7 @@ describe("QuestionnaireComponent", () => {
   beforeEach(() => {
     // Create a mock service
     mockQuestionnaireService = {
-      getQuestionnaireConfig: () => of(mockQuestionnaireConfig),
+      getQuestionnaireConfigFile: () => of(mockQuestionnaireConfig),
     };
 
     TestBed.configureTestingModule({

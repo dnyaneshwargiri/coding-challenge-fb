@@ -39,7 +39,7 @@ The main components and services in the frontend are:
 
 The frontend logic follows the following workflow:
 
-1. On application load, `app.component.ts` initializes the questionnaire by calling the `getQuestionnaireConfig()` method from the `QuestionnaireService`.
+1. On application load, `app.component.ts` initializes the questionnaire by calling the `getQuestionnaireConfigFile()` method from the `QuestionnaireService`.
 2. `QuestionnaireService` sends an HTTP request to the backend API endpoint to fetch the questionnaire configuration from the JSON file.
 3. Once the questionnaire configuration is obtained, `app.component.ts` renders the questionnaire dynamically based on the received JSON data.
 4. Users can interact with the questionnaire, filling out input fields and selecting options.

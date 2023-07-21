@@ -7,6 +7,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import prisma from './prisma/prismaClient'; // Import the Prisma Client
 import dotenv from 'dotenv';
+import { createQuestionnaireInput } from './types/types';
 const app = express();
 // Load environment variables from the .env file
 dotenv.config();
@@ -16,59 +17,38 @@ const typeDefs = `#graphql
 type Questionnaire {
   id: Int
   title: String
-  pages: [Page]
+  pages: JSON
 }
-
-type Page {
-  id: Int
-  title: String
-  inputs: [Input]
-  conditionalNavigation: ConditionalNavigation
-}
-
-type Input {
-  id: Int
-  type: String
-  label: String
-  name: String
-  required: Boolean
-  options: [String]
-  recommendationValue: String
-  condition: ConditionalCheck
-}
-
-type ButtonInput {
-  id: Int
-  type: String
-  label: String
-  action: String
-  condition: ConditionalCheck
-}
-
-type ConditionalNavigation {
-  id: Int
-  conditions: [ConditionalCheck]
-  targetPageId: Int
-}
-
-type ConditionalCheck {
-  id: Int
-  type: String
-  sourceQuestion: String
-  requiredValue: String
-}
-
+scalar JSON
 type Query {
-  getQuestionnaireConfig: Questionnaire
+  questionnaires: [Questionnaire]
+}
+type Mutation {
+  createQuestionnaire(id: Int!, title: String!, pages: JSON!): Questionnaire
 }
 `;
 
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    getQuestionnaireConfig: async () => {
-      const pages = await prisma.page.findMany({});
-      return { pages };
+    questionnaires: async () => {
+      const questionnairies = await prisma.questionnaire.findMany();
+      return questionnairies;
+    },
+  },
+  Mutation: {
+    createQuestionnaire: async (
+      _parent: any,
+      args: createQuestionnaireInput,
+    ) => {
+      const questionnaire = await prisma.questionnaire.create({
+        data: {
+          id: args.id,
+          title: args.title,
+          pages: args.pages,
+        },
+      });
+      return questionnaire;
     },
   },
 };
