@@ -18,7 +18,8 @@ The frontend project is structured as follows:
 project-root/
   |-- src/
   |     |-- app/
-  |     |     |-- components/         // Contains reusable components
+              |-- common/             // Contains reusable components
+  |     |     |-- components/         // Contains components
   |     |     |-- models/             // Contains TypeScript interfaces/models
   |     |     |-- services/           // Contains Angular services for data handling
   |     |     |-- app.component.ts    // Main component for the application
@@ -40,18 +41,19 @@ The main components and services in the frontend are:
 The frontend logic follows the following workflow:
 
 1. On application load, `app.component.ts` initializes the questionnaire by calling the `getQuestionnaireConfigFile()` method from the `QuestionnaireService`.
-2. `QuestionnaireService` sends an HTTP request to the backend API endpoint to fetch the questionnaire configuration from the JSON file.
+2. `QuestionnaireService` sends an HTTP request to the backend API endpoint to fetch the questionnaire configuration from the GraphQL server.
 3. Once the questionnaire configuration is obtained, `app.component.ts` renders the questionnaire dynamically based on the received JSON data.
 4. Users can interact with the questionnaire, filling out input fields and selecting options.
 5. Based on the user's input, the "Next" button becomes active or disabled, depending on whether required inputs are filled or not.
 6. Users can navigate through the questionnaire using the "Next" and "Previous" buttons.
-7. When the user submits the questionnaire, the final data is sent to the backend for processing.
+7. Recommedations are generated based on the recommednation logic present in Questionnarie data object.
+8. When the user submits the questionnaire, the final data is sent to the backend for processing.
 
 == Backend
 
 === Introduction
 
-This section provides an overview of the backend logic of the application. The backend is built using Node.js with a Prisma API connected to a PostgreSQL database.
+This section provides an overview of the backend logic of the application. The backend is built using Node.js with a Prisma API, Apollo server connected to a PostgreSQL database.
 
 === Project Structure
 
@@ -65,10 +67,15 @@ project-root/
   |     |     |-- schema.prisma      // Contains the Prisma schema definition
 
               |-- prismaClient.ts    // Initialization of prisma client
+              |-- migrations/        // Contains Postgres SQL script for schema
   |     |-- types/                   // Exports all types
+        |-- graphql/                 // Exports all graphql interfaces
+             |-- typedefs/  
+             |-- resolvers/  
   
   |     |-- tests/                   // Contains all test files
-              |-- test.ts               
+              |-- test.ts   
+        |-- server.ts                // Driver file used to launch Apollo server  
   |-- .env                           // Contains environment variables (e.g., DATABASE_URL)
 ----
 
@@ -77,15 +84,14 @@ project-root/
 The main components and resolvers in the backend are:
 
 1. db/schema.prisma: Contains the Prisma schema definition for the Page model and its properties.
-2. resolvers/Mutation.ts: Contains GraphQL mutation resolvers for creating new pages with questionnaire data.
-3. resolvers/Query.ts: Contains GraphQL query resolvers for fetching the questionnaire configuration from the database.
+2. resolvers/resolver.ts: Contains GraphQL mutation resolvers for creating new pages with questionnaire data. Contains GraphQL query resolvers for fetching the questionnaire configuration from the database.
 
 === Workflow
 
 The backend logic follows the following workflow:
 
 1. On the frontend's request to fetch the questionnaire configuration, the backend GraphQL server handles the request.
-2. GraphQL query resolver `pageById` in `resolvers/Query.ts` is called to fetch the questionnaire data from the database based on the provided page ID.
+2. GraphQL query resolver `questionnaireById` in `resolvers/resolver.ts` is called to fetch the questionnaire data from the database based on the provided questionnarie ID.
 3. The backend sends the questionnaire configuration as a JSON response to the frontend.
 
 == Conditional Logic of Inputs and Pages
@@ -200,6 +206,6 @@ In the above example, if the user selects "Child" as the answer for the input wi
 The conditional logic implemented in the questionnaire application allows for dynamic visibility of inputs and conditional navigation between pages based on user input. By using the `condition` property for inputs and the `conditionalNavigation` property for pages in the questionnaire JSON configuration, the application provides a customized user experience based on the user's selections and inputs.
 
 
-== End
+== Goal
 
 This documentation provides an overview of the frontend and backend logic and explains the workflow of the application. Developers can use this documentation to understand how the code is structured and how the different components and services interact to create a dynamic questionnaire application.
