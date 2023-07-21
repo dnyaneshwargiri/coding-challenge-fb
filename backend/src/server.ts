@@ -5,53 +5,9 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import prisma from './prisma/prismaClient'; // Import the Prisma Client
-import dotenv from 'dotenv';
-import { createQuestionnaireInput } from './types/types';
+import { typeDefs } from './graphql/typedefs/typedef';
+import { resolvers } from './graphql/resolvers/resolver';
 const app = express();
-// Load environment variables from the .env file
-dotenv.config();
-
-// The GraphQL schema
-const typeDefs = `#graphql
-type Questionnaire {
-  id: Int
-  title: String
-  pages: JSON
-}
-scalar JSON
-type Query {
-  questionnaires: [Questionnaire]
-}
-type Mutation {
-  createQuestionnaire(id: Int!, title: String!, pages: JSON!): Questionnaire
-}
-`;
-
-// A map of functions which return data for the schema.
-const resolvers = {
-  Query: {
-    questionnaires: async () => {
-      const questionnairies = await prisma.questionnaire.findMany();
-      return questionnairies;
-    },
-  },
-  Mutation: {
-    createQuestionnaire: async (
-      _parent: any,
-      args: createQuestionnaireInput,
-    ) => {
-      const questionnaire = await prisma.questionnaire.create({
-        data: {
-          id: args.id,
-          title: args.title,
-          pages: args.pages,
-        },
-      });
-      return questionnaire;
-    },
-  },
-};
 
 async function main() {
   const httpServer = http.createServer(app);

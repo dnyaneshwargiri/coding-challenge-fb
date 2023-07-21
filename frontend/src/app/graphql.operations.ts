@@ -1,8 +1,19 @@
 import { gql } from "apollo-angular";
 
-const GET_QUESTIONNARIE = gql`
-  query GetQuestionnarie {
-    Questionnaire {
+const questionnaireId = 1;
+
+const GET_QUESTIONNARIES = gql`
+  query GetQuestionnaires {
+    questionnaires {
+      id
+      title
+      pages
+    }
+  }
+`;
+const GET_QUESTIONNARIE_BY_ID = gql`
+  query GetQuestionnaireById {
+    questionnaireById(questionnaireId: ${questionnaireId}) {
       id
       title
       pages
@@ -10,4 +21,4 @@ const GET_QUESTIONNARIE = gql`
   }
 `;
 
-export { GET_QUESTIONNARIE };
+export { GET_QUESTIONNARIES, GET_QUESTIONNARIE_BY_ID };

@@ -1,5 +1,4 @@
-version: '3.5'
-
+version: "3.5"
 
 services:
   postgres:
@@ -10,6 +9,6 @@ services:
       POSTGRES_PASSWORD: foxbaseRoot
       PGDATA: /data/postgres
     volumes:
-       - ./database:/data/postgres
+      - ./database:/data/postgres
     ports:
       - "5432:5432"

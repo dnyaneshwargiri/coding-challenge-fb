@@ -10,12 +10,13 @@ import { QuestionnaireService } from "./services/questionnaire.service";
 export class AppComponent {
   title = "digitizer";
   questionnaireConfig: QuestionnaireConfig = { pages: [] };
+  questionnaireTitle:string="Find My Color Space"
   constructor(private questionnaireService: QuestionnaireService) {
     return;
   }
   ngOnInit() {
-    this.getQuestionnaireConfigFile();
-    //this.getQuestionnaireConfig();
+    //this.getQuestionnaireConfigFile();
+    this.getQuestionnaireConfig();
   }
   public getQuestionnaireConfigFile(): void {
     this.questionnaireService
@@ -27,8 +28,9 @@ export class AppComponent {
   public getQuestionnaireConfig(): void {
     this.questionnaireService
       .getQuestionnaireConfig()
-      .subscribe((questionnaire:any) => {
-        this.questionnaireConfig = questionnaire;
+      .subscribe((response: any) => {
+        console.log(response.data);
+        //this.questionnaireConfig = response.data.questionnaires[1].pages;
       });
   }
 }

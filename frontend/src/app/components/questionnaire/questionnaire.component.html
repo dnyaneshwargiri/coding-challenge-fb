@@ -1,6 +1,11 @@
 <div
   class="w-full min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100"
 >
+  <header
+    class="flex justify-center items-center h-16 bg-gray-200 text-blue-600 text-xl font-semibold mb-4 p-4"
+  >
+    {{ questionnaireTitle }}
+  </header>
   <div class="max-w-md w-full bg-white p-6 shadow-lg">
     <ng-container *ngIf="currentPageIndex < questionnaireConfig.pages.length">
       <h2 class="text-2xl font-bold mb-4">
@@ -58,7 +63,9 @@
               (click)="goToNextPage()"
               [disabled]="!areRequiredInputsFilled()"
               class="bg-blue-500 text-white px-4 py-2"
-              [ngClass]="{ 'opacity-50 cursor-not-allowed': !areRequiredInputsFilled() }"
+              [ngClass]="{
+                'opacity-50 cursor-not-allowed': !areRequiredInputsFilled()
+              }"
             >
               {{ input.label }}
             </button>

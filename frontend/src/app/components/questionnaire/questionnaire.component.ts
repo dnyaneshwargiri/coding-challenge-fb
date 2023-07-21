@@ -15,6 +15,7 @@ import {
 })
 export class QuestionnaireComponent {
   @Input() questionnaireConfig: QuestionnaireConfig = { pages: [] };
+  @Input() questionnaireTitle: String = "";
   currentPageIndex: number = 0;
   formData: FormData = {};
 
@@ -24,7 +25,6 @@ export class QuestionnaireComponent {
     const requiredInputs = currentPage.inputs.filter(
       (input) => (input as InputConfig).required
     );
-
     if (
       requiredInputs.every(
         (input) => this.getFormValue((input as InputConfig).name) !== ""
@@ -38,7 +38,6 @@ export class QuestionnaireComponent {
         this.currentPageIndex = nextPageIndex;
       }
     }
-
     if (this.isPageAccessible(currentPage)) {
       let nextAccessiblePageIndex =
         this.getNextAccessiblePageIndex(nextPageIndex);
@@ -67,14 +66,12 @@ export class QuestionnaireComponent {
     if (startIndex >= this.questionnaireConfig.pages.length) {
       return null;
     }
-
     for (let i = startIndex; i < this.questionnaireConfig.pages.length; i++) {
       const nextPage = this.questionnaireConfig.pages[i];
       if (!nextPage.conditionalNavigation || this.isPageAccessible(nextPage)) {
         return i;
       }
     }
-
     return null;
   }
 
@@ -87,19 +84,15 @@ export class QuestionnaireComponent {
     if (!page.conditionalNavigation) {
       return true;
     }
-
     const conditions = page.conditionalNavigation.conditions;
-
     for (const condition of conditions) {
       const sourceQuestion = condition.sourceQuestion;
       const requiredValue = condition.requiredValue;
       const userValue = this.getFormValue(sourceQuestion);
-
       if (userValue !== requiredValue) {
         return false; // If any condition fails, page is not accessible
       }
     }
-
     return true; // All conditions are met, page is accessible
   }
 
@@ -121,16 +114,13 @@ export class QuestionnaireComponent {
     if (!input.condition) {
       return true; // Show the input if there's no condition specified
     }
-
     const condition = input.condition as ConditionalCheck;
     const sourceQuestion = condition.sourceQuestion;
     const requiredValue = condition.requiredValue;
     const userValue = this.getFormValue(sourceQuestion);
-
     if (condition.type === "multipleCheck") {
       return Object.values(requiredValue).includes(userValue);
     }
-
     return userValue === requiredValue;
   }
 
@@ -143,7 +133,6 @@ export class QuestionnaireComponent {
     const requiredInputs = currentPage.inputs.filter(
       (input) => (input as InputConfig).required
     );
-
     return requiredInputs.every(
       (input) => this.getFormValue((input as InputConfig).name) !== undefined
     );

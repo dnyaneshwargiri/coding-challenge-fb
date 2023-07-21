@@ -1,0 +1,219 @@
+{
+    "createQuestionnaireId": 1,
+    "title": "Find My Color Space",
+    "pages": {
+        "pages": [
+            {
+                "pageId": 1,
+                "title": "Application Scope",
+                "inputs": [
+                    {
+                        "type": "radio",
+                        "label": "What is scope of aplication?",
+                        "name": "scopeOfApplication",
+                        "required": true,
+                        "options": [
+                            "Outside",
+                            "Within"
+                        ]
+                    },
+                    {
+                        "type": "button",
+                        "label": "Next",
+                        "action": "next"
+                    }
+                ]
+            },
+            {
+                "pageId": 2,
+                "title": "Underground",
+                "inputs": [
+                    {
+                        "type": "checkbox",
+                        "label": "Wood",
+                        "name": "wood",
+                        "condition": {
+                            "sourceQuestion": "scopeOfApplication",
+                            "requiredValue": "Outside"
+                        }
+                    },
+                    {
+                        "type": "checkbox",
+                        "label": "Facade",
+                        "name": "facade",
+                        "condition": {
+                            "sourceQuestion": "scopeOfApplication",
+                            "requiredValue": "Outside"
+                        }
+                    },
+                    {
+                        "type": "checkbox",
+                        "label": "Mat",
+                        "name": "mat",
+                        "condition": {
+                            "sourceQuestion": "scopeOfApplication",
+                            "requiredValue": "Within"
+                        }
+                    },
+                    {
+                        "type": "checkbox",
+                        "label": "Putz",
+                        "name": "putz",
+                        "condition": {
+                            "sourceQuestion": "scopeOfApplication",
+                            "requiredValue": "Within"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "label": "Next",
+                        "action": "next"
+                    }
+                ]
+            },
+            {
+                "pageId": 3,
+                "title": "Opacity",
+                "required": true,
+                "inputs": [
+                    {
+                        "type": "radio",
+                        "label": "Do you know about opacity?",
+                        "name": "opacityKnown",
+                        "required": true,
+                        "options": [
+                            "Yes",
+                            "No"
+                        ]
+                    },
+                    {
+                        "type": "button",
+                        "label": "Next",
+                        "action": "next"
+                    }
+                ]
+            },
+            {
+                "pageId": 4,
+                "title": "Intensity level",
+                "required": true,
+                "conditionalNavigation": {
+                    "conditions": [
+                        {
+                            "sourceQuestion": "opacityKnown",
+                            "requiredValue": "Yes"
+                        }
+                    ],
+                    "targetPageId": 6
+                },
+                "inputs": [
+                    {
+                        "type": "radio",
+                        "label": "How strong?",
+                        "name": "opacityStrength",
+                        "required": true,
+                        "options": [
+                            "<95",
+                            "95",
+                            "98",
+                            ">99.5"
+                        ]
+                    },
+                    {
+                        "type": "button",
+                        "label": "Next",
+                        "action": "next"
+                    }
+                ]
+            },
+            {
+                "pageId": 5,
+                "title": "Vue",
+                "required": true,
+                "conditionalNavigation": {
+                    "conditions": [
+                        {
+                            "sourceQuestion": "opacityKnown",
+                            "requiredValue": "No"
+                        }
+                    ],
+                    "targetPageId": 6
+                },
+                "inputs": [
+                    {
+                        "type": "radio",
+                        "label": "Which underground?",
+                        "name": "undergroundIntensity",
+                        "options": [
+                            "Brighter",
+                            "Darker"
+                        ]
+                    },
+                    {
+                        "type": "button",
+                        "label": "Next",
+                        "action": "next"
+                    }
+                ]
+            },
+            {
+                "pageId": 6,
+                "title": "Recommendation",
+                "inputs": [
+                    {
+                        "type": "recommendation",
+                        "label": "Recommended Color(s): ",
+                        "name": "recommendation",
+                        "required": false,
+                        "recommendationValue": "White, Yellow, Blue",
+                        "condition": {
+                            "sourceQuestion": "undergroundIntensity",
+                            "requiredValue": "Brighter"
+                        }
+                    },
+                    {
+                        "type": "recommendation",
+                        "label": "Recommendation: ",
+                        "name": "recommendation",
+                        "required": false,
+                        "recommendationValue": "Black, Red, Green",
+                        "condition": {
+                            "sourceQuestion": "undergroundIntensity",
+                            "requiredValue": "Darker"
+                        }
+                    },
+                    {
+                        "type": "recommendation",
+                        "label": "Recommendation: ",
+                        "name": "recommendation",
+                        "required": false,
+                        "recommendationValue": "White, Yellow, Blue",
+                        "condition": {
+                            "type": "multipleCheck",
+                            "sourceQuestion": "opacityStrength",
+                            "requiredValue": [
+                                "<95",
+                                "95"
+                            ]
+                        }
+                    },
+                    {
+                        "type": "recommendation",
+                        "label": "Recommendation: ",
+                        "name": "recommendation",
+                        "required": false,
+                        "recommendationValue": "Black, Red, Green",
+                        "condition": {
+                            "type": "multipleCheck",
+                            "sourceQuestion": "opacityStrength",
+                            "requiredValue": [
+                                "98",
+                                ">99.5"
+                            ]
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
