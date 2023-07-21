@@ -5,7 +5,9 @@ import { AppComponent } from "./app.component";
 import { QuestionnaireComponent } from "./components/questionnaire/questionnaire.component";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
-import { GraphQLModule } from './graphql.module';
+import { GraphQLModule } from "./graphql.module";
+import { CommonsModule } from "./common/commons.module";
+
 @NgModule({
   declarations: [AppComponent, QuestionnaireComponent],
   imports: [
@@ -15,6 +17,7 @@ import { GraphQLModule } from './graphql.module';
     FormsModule,
     HttpClientModule,
     GraphQLModule,
+    CommonsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

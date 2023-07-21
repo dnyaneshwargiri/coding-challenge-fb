@@ -1,5 +1,8 @@
 import prisma from '../../prisma/prismaClient'; // Import the Prisma Client
-import { createQuestionnaireInput } from '../../types/types';
+import {
+  createQuestionnaireInput,
+  questionnaireByIdInput,
+} from '../../types/types';
 
 // A map of functions which return data for the schema.
 const resolvers = {
@@ -8,9 +11,12 @@ const resolvers = {
       const questionnairies = await prisma.questionnaire.findMany();
       return questionnairies;
     },
-    questionnaireById: async (_parent: any, questionnaireId: number) => {
+    questionnaireById: async (
+      _parent: any,
+      questionnaireByIdInput: questionnaireByIdInput,
+    ) => {
       const questionnaire = await prisma.questionnaire.findUnique({
-        where: { id: questionnaireId },
+        where: { id: questionnaireByIdInput.questionnaireId },
       });
       return questionnaire;
     },

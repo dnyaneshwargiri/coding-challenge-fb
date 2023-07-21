@@ -2,8 +2,11 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { QuestionnaireConfig } from "../models/questionnaire-config.type";
-import { Apollo, gql } from "apollo-angular";
-import { GET_QUESTIONNARIES, GET_QUESTIONNARIE_BY_ID } from "../graphql.operations";
+import { Apollo } from "apollo-angular";
+import {
+  GET_QUESTIONNARIES,
+  GET_QUESTIONNARIE_BY_ID,
+} from "../graphql.operations";
 
 @Injectable({
   providedIn: "root",

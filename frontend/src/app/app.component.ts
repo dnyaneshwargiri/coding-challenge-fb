@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { QuestionnaireConfig } from "./models/questionnaire-config.type";
 import { QuestionnaireService } from "./services/questionnaire.service";
+import { CommonService } from "./common/services/common.service";
 
 @Component({
   selector: "app-root",
@@ -10,27 +11,35 @@ import { QuestionnaireService } from "./services/questionnaire.service";
 export class AppComponent {
   title = "digitizer";
   questionnaireConfig: QuestionnaireConfig = { pages: [] };
-  questionnaireTitle:string="Find My Color Space"
-  constructor(private questionnaireService: QuestionnaireService) {
+  questionnaireTitle: string = "";
+  showToaster = false;
+  constructor(
+    private questionnaireService: QuestionnaireService,
+    private commonService: CommonService
+  ) {
     return;
   }
   ngOnInit() {
-    //this.getQuestionnaireConfigFile();
-    this.getQuestionnaireConfig();
+    this.getQuestionnaireConfigFile(); //<-- Local file
+    //this.getQuestionnaireConfigById(); //<-- From Appolo Server
+    this.commonService.toasterVisibility$.subscribe((visibility) => {
+      this.showToaster = visibility;
+    });
   }
   public getQuestionnaireConfigFile(): void {
     this.questionnaireService
       .getQuestionnaireConfigFile()
       .subscribe((config) => {
+        this.questionnaireTitle = "Find My Color Space";
         this.questionnaireConfig = config;
       });
   }
-  public getQuestionnaireConfig(): void {
+  public getQuestionnaireConfigById(): void {
     this.questionnaireService
       .getQuestionnaireConfig()
       .subscribe((response: any) => {
-        console.log(response.data);
-        //this.questionnaireConfig = response.data.questionnaires[1].pages;
+        this.questionnaireTitle = response.data.questionnaireById.title;
+        this.questionnaireConfig = response.data.questionnaireById.pages;
       });
   }
 }

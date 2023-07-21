@@ -1,7 +1,7 @@
 
 # Digitizer
 
-A full fledged digital project selector tool for B2B sales.
+A digital project selector tool for B2B sales.
 
 ## Installation
 Clone the project
@@ -26,13 +26,15 @@ Database- PostgresSQL.
 
 Update the DATABASE_URL in .env file.
 
-Execute below commands to generate and migrate PostgresSQL database requried for digitizer application.
+Execute below commands to generate and migrate PostgresSQL database requried for digitizer application. Below operation would create schema/ tables requried in your PostgresSQL server. 
 ```bash
   cd backend
   npx prisma generate --schema=./src/prisma/schema.prisma
   npx prisma migrate dev --name init --schema=./src/prisma/schema.prisma 
 
 ```
+
+In order to load the data sample required for example questionnaire import the __mockData/graphql-input.json__ from Apollo Server as using __createQuestionnaire__ mutation
 ## Run Locally
 
 
@@ -83,12 +85,12 @@ __File- questionnaire.service.ts__
 
 ```
 
-Once you have Backend server up and connected to PostgresSQL provided in .env file then comment above method and uncomment the below method to take data from PostgresSQL over Apollo Client.
+Once you have Backend server up with sample data in PostgresSQL  then comment __getQuestionnaireConfigFile()__  method and uncomment the  __getQuestionnaireConfigById()__ method to take data from PostgresSQL over Apollo Client.
 
 __File- app.component.ts__
 ```typescript
 this.getQuestionnaireConfigFile();
-//this.getQuestionnaireConfig();
+//this.getQuestionnaireConfigById();
 
 ```
 For getting a data from graphql via Apollo Client, You can customize GraphQL uri
@@ -132,7 +134,7 @@ To run this project on live database, you will need to add the following environ
 
 **Server:** Node, Express, Prisma, Appolo Server, Prisma Client
 
-**Database:** Postgresql 15.0.1
+**Database:** Postgresql 15
 
 
 

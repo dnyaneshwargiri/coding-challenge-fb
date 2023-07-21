@@ -7,6 +7,7 @@ import {
   ConditionalCheck,
   ButtonInput,
 } from "../../models/questionnaire-config.type";
+import { CommonService } from "src/app/common/services/common.service";
 
 @Component({
   selector: "app-questionnaire",
@@ -14,6 +15,8 @@ import {
   styleUrls: ["./questionnaire.component.css"],
 })
 export class QuestionnaireComponent {
+  constructor(private commonService: CommonService) {}
+
   @Input() questionnaireConfig: QuestionnaireConfig = { pages: [] };
   @Input() questionnaireTitle: String = "";
   currentPageIndex: number = 0;
@@ -55,6 +58,10 @@ export class QuestionnaireComponent {
     if (this.currentPageIndex > 0) {
       this.currentPageIndex--;
     }
+  }
+  public goToFirstPage(): void {
+    this.currentPageIndex = 0;
+    this.formData = {};
   }
 
   /**
@@ -140,5 +147,8 @@ export class QuestionnaireComponent {
 
   public onSubmit(): void {
     console.log("Form submitted!");
+    this.goToFirstPage();
+    this.commonService.showToaster("Responses Successfully Submitted");
+    // TODO: Implement save Formdata method
   }
 }

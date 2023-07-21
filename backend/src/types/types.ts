@@ -3,3 +3,6 @@ export type createQuestionnaireInput = {
   title: string;
   pages: object;
 };
+export type questionnaireByIdInput = {
+  questionnaireId: number;
+};
