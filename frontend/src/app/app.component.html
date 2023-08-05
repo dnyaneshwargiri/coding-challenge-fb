@@ -1,8 +1,5 @@
 <header class="py-4 px-6 flex items-center">
   <img src="./../assets/logo-dark.svg" alt="Logo" class="h-8 w-auto mr-4" />
 </header>
-<app-questionnaire
-  [questionnaireConfig]="questionnaireConfig"
-  [questionnaireTitle]="questionnaireTitle"
-></app-questionnaire>
+<router-outlet></router-outlet>
 <app-toaster *ngIf="showToaster"></app-toaster>

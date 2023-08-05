@@ -112,18 +112,4 @@ describe("Service: Questionnaire", () => {
     httpTestingController.verify();
   });
 
-  it("should return the correct questionnaire configuration", () => {
-    const mockConfig: QuestionnaireConfig = mockData;
-
-    // Set up the HTTP response
-    questionnaireService.getQuestionnaireConfigFile().subscribe((config) => {
-      expect(config).toEqual(mockConfig);
-    });
-
-    const req = httpTestingController.expectOne(
-      "/assets/questionnaire-config.json"
-    );
-    expect(req.request.method).toBe("GET");
-    req.flush(mockConfig);
-  });
 });

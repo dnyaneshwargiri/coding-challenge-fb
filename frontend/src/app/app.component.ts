@@ -20,20 +20,12 @@ export class AppComponent {
     return;
   }
   ngOnInit() {
-    this.getQuestionnaireConfigFile(); //<-- Local file
-    //this.getQuestionnaireConfigById(); //<-- From Appolo Server
+    this.getQuestionnaireConfigById(); 
     this.commonService.toasterVisibility$.subscribe((visibility) => {
       this.showToaster = visibility;
     });
   }
-  public getQuestionnaireConfigFile(): void {
-    this.questionnaireService
-      .getQuestionnaireConfigFile()
-      .subscribe((config) => {
-        this.questionnaireTitle = "Find My Color Space";
-        this.questionnaireConfig = config;
-      });
-  }
+
   public getQuestionnaireConfigById(): void {
     this.questionnaireService
       .getQuestionnaireConfig()

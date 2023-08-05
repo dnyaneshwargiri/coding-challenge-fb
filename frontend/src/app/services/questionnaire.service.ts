@@ -6,7 +6,7 @@ import { Apollo } from "apollo-angular";
 import {
   GET_QUESTIONNARIES,
   GET_QUESTIONNARIE_BY_ID,
-} from "../graphql.operations";
+} from "../common/modules/graphql/graphql.operations";
 
 @Injectable({
   providedIn: "root",
@@ -14,12 +14,6 @@ import {
 export class QuestionnaireService {
   constructor(private apollo: Apollo, private http: HttpClient) {}
 
-  //From local file
-  getQuestionnaireConfigFile(): Observable<QuestionnaireConfig> {
-    return this.http.get<QuestionnaireConfig>(
-      "/assets/questionnaire-config.json"
-    );
-  }
   //From Apollo Server
   getQuestionnaireConfig(): Observable<any> {
     return this.apollo.watchQuery<any>({

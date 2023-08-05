@@ -1,0 +1,12 @@
+<div class="flex items-center">
+  <label class="mr-2">{{ question }}:</label>
+  <input
+    type="range"
+    [min]="min"
+    [max]="max"
+    [(ngModel)]="opacityValue"
+    (change)="onSliderChange($event)"
+    class="w-full"
+  />
+  <span class="ml-2">{{ opacityValue }}</span>
+</div>

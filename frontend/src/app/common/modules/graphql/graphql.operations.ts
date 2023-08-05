@@ -1,6 +1,6 @@
 import { gql } from "apollo-angular";
 
-const questionnaireId = 1; //Example Questionnarie
+const questionnaireId = 2; //Example Questionnarie
 
 const GET_QUESTIONNARIES = gql`
   query GetQuestionnaires {

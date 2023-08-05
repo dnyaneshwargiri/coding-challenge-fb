@@ -1,0 +1,14 @@
+<div class="flex flex-col items-left">
+  <label class="block mb-2">{{ question }}</label>
+  <div *ngFor="let option of options" class="mb-2">
+    <input
+      type="radio"
+      name="option"
+      [value]="option"
+      [(ngModel)]="selectedOption"
+      (change)="onOptionSelected()"
+      class="mr-2"
+    />
+    {{ option }}
+  </div>
+</div>
