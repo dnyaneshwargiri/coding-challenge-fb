@@ -33,8 +33,6 @@ Execute below commands to generate and migrate PostgresSQL database requried for
   npx prisma migrate dev --name init --schema=./src/prisma/schema.prisma 
 
 ```
-
-In order to load the data sample required for example questionnaire import the __mockData/graphql-input.json__ from Apollo Server as using __createQuestionnaire__ mutation
 ## Run Locally
 
 
@@ -71,29 +69,28 @@ Start the Apollo Server
 
 ## Usage/Examples
 
-By default Frontend is picking questionnarie and pages data from local json file viz. __frontend/src/assets/questionnaire-config.json__
+In order to run the recommendation alogorithm PostgresSQL database need to have below record in user table.
 
-__File- questionnaire.service.ts__
+```json
+ {
+    userId: 1,
+    userName: "Dnyaneshwar",
+ }
+
+```
+ 
+
+__File- recommendaton.service.ts__
 ```typescript
-
-  //API call to fetch JSON local file.
-  getQuestionnaireConfigFile(): Observable<QuestionnaireConfig> {
-    return this.http.get<QuestionnaireConfig>(
-      "/assets/questionnaire-config.json"
-    );
-  }
+  // Mock logged in user
+  loggedInUser: User = {
+    userId: 1,
+    userName: "Dnyaneshwar",
+  };
 
 ```
 
-Once you have Backend server up with sample data in PostgresSQL  then comment __getQuestionnaireConfigFile()__  method and uncomment the  __getQuestionnaireConfigById()__ method to take data from PostgresSQL over Apollo Client.
-
-__File- app.component.ts__
-```typescript
-this.getQuestionnaireConfigFile();
-//this.getQuestionnaireConfigById();
-
-```
-For getting a data from graphql via Apollo Client, You can customize GraphQL uri
+Once you have Backend server up with sample data in PostgresSQL then proceed to use of Frontend. For getting a data from graphql via Apollo Client, You can customize GraphQL uri
 ```typescript
 const uri = 'http://localhost:4000/'; // <-- add the URL of the GraphQL server here
 ```
@@ -111,7 +108,6 @@ To run tests, run the following command in either frontend or backend directory.
 ![App Screenshot](https://raw.githubusercontent.com/dnyaneshwargiri/coding-challenge-fb/main/screenshots/question%20page-1.png)
 
 ![App Screenshot](https://raw.githubusercontent.com/dnyaneshwargiri/coding-challenge-fb/main/screenshots/question%20page-2.png)
-
 
 
 ![App Screenshot](https://raw.githubusercontent.com/dnyaneshwargiri/coding-challenge-fb/main/screenshots/recommend%20page.png)
