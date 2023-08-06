@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { Question, QuestionResponseModel } from "src/app/models/question-form";
-import { QuestionnaireService } from "src/app/services/questionnaire.service";
+import { RecommendationService } from "src/app/services/recommendaton.service";
 
 @Component({
   selector: "app-opacity",
@@ -11,7 +11,7 @@ import { QuestionnaireService } from "src/app/services/questionnaire.service";
 export class OpacityComponent {
   constructor(
     private router: Router,
-    private questionnaireService: QuestionnaireService
+    private RecommendationService: RecommendationService
   ) {}
   question: Question = {
     questionId: 4,
@@ -31,9 +31,9 @@ export class OpacityComponent {
       question: this.question,
       answer: this.selectedOpacity.toString(),
     };
-    this.questionnaireService.addResponse(formData);
-    const allResponses = this.questionnaireService.getResponses();
-    this.questionnaireService.getRecommendation(allResponses).subscribe(
+    this.RecommendationService.addResponse(formData);
+    const allResponses = this.RecommendationService.getResponses();
+    this.RecommendationService.getRecommendation(allResponses).subscribe(
       ({ data }) => {
         const recommendedColor = data.createUserResponses;
         this.router.navigateByUrl(`/recommendation/${recommendedColor}`);

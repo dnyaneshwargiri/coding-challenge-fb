@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { Question, QuestionResponseModel } from "src/app/models/question-form";
-import { QuestionnaireService } from "src/app/services/questionnaire.service";
+import { RecommendationService } from "src/app/services/recommendaton.service";
 
 @Component({
   selector: "app-underground",
@@ -26,7 +26,7 @@ export class UndergroundComponent {
 
   constructor(
     private router: Router,
-    private questionnaireService: QuestionnaireService
+    private RecommendationService: RecommendationService
   ) {}
 
   onOptionSelected(option: string) {
@@ -42,12 +42,12 @@ export class UndergroundComponent {
       question: this.question1,
       answer: this.selectedMaterialType,
     };
-    this.questionnaireService.addResponse(formData1);
+    this.RecommendationService.addResponse(formData1);
     const formData2: QuestionResponseModel = {
       question: this.question2,
       answer: this.opacityKnown.toString(),
     };
-    this.questionnaireService.addResponse(formData2);
+    this.RecommendationService.addResponse(formData2);
     this.opacityKnown
       ? this.router.navigate(["/opacity"])
       : this.router.navigate(["/materialhue"]);

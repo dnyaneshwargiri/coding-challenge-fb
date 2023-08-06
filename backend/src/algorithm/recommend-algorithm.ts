@@ -1,9 +1,10 @@
-import { QuestionResponseModel, User } from '../types/types';
+import { QuestionResponseModel } from '../types/types';
 
 function getRecommendation(userResponses: {
   userId: number;
   responses: QuestionResponseModel[];
 }): string {
+  // Mocking a responses initially for training purpose
   // This need to taken from DB based on actual user responses
   // For sake of demo initializing with random data
   // Rows : Users
@@ -33,7 +34,7 @@ function getRecommendation(userResponses: {
       RESPONSES[userIdx] = new Array(questionIds.length).fill(null);
     }
     RESPONSES[userIdx][questionIdx] = Number.isNaN(parseFloat(response.answer))
-      ? 0
+      ? Math.random()
       : parseFloat(response.answer);
   }
   // We can use libraries like SVD or Alternating Least Squares (ALS) for matrix factorization
@@ -43,8 +44,6 @@ function getRecommendation(userResponses: {
   // Now, find the color to recommend based on the predicted interactions
   // This is just an example, we may have our own logic based on the predicted values
   const colorOptions = ['Red', 'Green', 'Blue', 'Yellow', 'Black']; // Example color options
-  console.log(...predictedInteractions[userResponses.userId]);
-  
   const maxInteractionIdx = predictedInteractions[userResponses.userId].indexOf(
     Math.max(...predictedInteractions[userResponses.userId]),
   );
@@ -61,11 +60,11 @@ function matrixFactorizationAlgorithm(
   const numCols = RESPONSES[1].length;
   // Randomly initialize user and question embeddings
   let userEmbeddings = new Array(numRows)
-    .fill(0)
-    .map(() => new Array(numFeatures).fill(0));
+    .fill(Math.random())
+    .map(() => new Array(numFeatures).fill(Math.random()));
   let questionEmbeddings = new Array(numCols)
-    .fill(0)
-    .map(() => new Array(numFeatures).fill(0));
+    .fill(Math.random())
+    .map(() => new Array(numFeatures).fill(Math.random()));
   // Perform matrix factorization using gradient descent
   for (let iter = 0; iter < iterations; iter++) {
     for (let i = 0; i < numRows; i++) {

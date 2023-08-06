@@ -1,5 +1,5 @@
 import { TestBed } from "@angular/core/testing";
-import { QuestionnaireService } from "./questionnaire.service";
+import { RecommendationService } from "./recommendaton.service";
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -7,15 +7,15 @@ import {
 import { HttpClientModule } from "@angular/common/http";
 
 describe("Service: Questionnaire", () => {
-  let questionnaireService: QuestionnaireService;
+  let RecommendationService: RecommendationService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, HttpClientModule],
-      providers: [QuestionnaireService],
+      providers: [RecommendationService],
     });
-    questionnaireService = TestBed.inject(QuestionnaireService);
+    RecommendationService = TestBed.inject(RecommendationService);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 

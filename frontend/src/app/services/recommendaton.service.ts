@@ -11,7 +11,7 @@ import {
 @Injectable({
   providedIn: "root",
 })
-export class QuestionnaireService {
+export class RecommendationService {
   constructor(private apollo: Apollo, private http: HttpClient) {}
   private responsesSubject = new BehaviorSubject<QuestionResponseModel[]>([]);
   public responses$ = this.responsesSubject.asObservable();

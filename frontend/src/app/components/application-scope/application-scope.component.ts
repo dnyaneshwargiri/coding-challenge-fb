@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { Question, QuestionResponseModel } from "src/app/models/question-form";
-import { QuestionnaireService } from "src/app/services/questionnaire.service";
+import { RecommendationService } from "src/app/services/recommendaton.service";
 
 @Component({
   selector: "app-application-scope",
@@ -11,7 +11,7 @@ import { QuestionnaireService } from "src/app/services/questionnaire.service";
 export class ApplicationScopeComponent {
   constructor(
     private router: Router,
-    private questionnaireService: QuestionnaireService
+    private RecommendationService: RecommendationService
   ) {}
   selectedApplicationScope = "";
   question: Question = {
@@ -30,7 +30,7 @@ export class ApplicationScopeComponent {
       question: this.question,
       answer: this.selectedApplicationScope,
     };
-    this.questionnaireService.addResponse(formData);
+    this.RecommendationService.addResponse(formData);
     this.router.navigate(["/underground"]);
   }
 }
