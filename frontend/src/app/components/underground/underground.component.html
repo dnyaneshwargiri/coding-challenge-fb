@@ -4,12 +4,12 @@
   <div class="max-w-md w-full bg-white p-6 shadow-lg">
     <div class="w-full min-h-fit items-center">
       <input-radio
-        [question]="'What is the material type?'"
-        [options]="['Wood', 'Facade', 'Mat', 'Putz']"
+        [question]="question1.label"
+        [options]="question1.options!"
         (optionSelected)="onOptionSelected($event)"
       ></input-radio>
       <input-toggle
-        [question]="'Do you know Opacity?'"
+        [question]="question2.label"
         (valueChange)="onToggleValueChange($event)"
       ></input-toggle>
       <button

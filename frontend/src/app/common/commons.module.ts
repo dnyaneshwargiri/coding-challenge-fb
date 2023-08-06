@@ -6,6 +6,7 @@ import { FormsModule } from "@angular/forms";
 import { RadioInputComponent } from "./components/inputs/radioInput/radioInput.component";
 import { SliderInputComponent } from "./components/inputs/sliderInput/sliderInput.component";
 import { ToggleInputComponent } from "./components/inputs/toggleInput/toggleInput.component";
+import { HeaderComponent } from "./components/header/header.component";
 
 @NgModule({
   imports: [CommonModule, BrowserModule, FormsModule],
@@ -13,13 +14,15 @@ import { ToggleInputComponent } from "./components/inputs/toggleInput/toggleInpu
     ToasterComponent,
     RadioInputComponent,
     SliderInputComponent,
-    ToggleInputComponent
+    ToggleInputComponent,
+    HeaderComponent
   ],
   exports: [
     ToasterComponent,
     RadioInputComponent,
     SliderInputComponent,
-    ToggleInputComponent
+    ToggleInputComponent,
+    HeaderComponent
   ],
 })
 export class CommonsModule {}

@@ -4,8 +4,8 @@
   <div class="max-w-md w-full bg-white p-6 shadow-lg">
     <div class="w-full min-h-fit items-center">
       <input-radio
-        [question]="'What is the scope of application?'"
-        [options]="['Outside', 'Within']"
+        [question]="question.label"
+        [options]="question.options!"
         (optionSelected)="onOptionSelected($event)"
       ></input-radio>
       <button

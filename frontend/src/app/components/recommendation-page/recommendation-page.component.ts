@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-recommendation-page',
-  templateUrl: './recommendation-page.component.html',
-  styleUrls: ['./recommendation-page.component.css']
+  selector: "app-recommendation-page",
+  templateUrl: "./recommendation-page.component.html",
+  styleUrls: ["./recommendation-page.component.css"],
 })
 export class RecommendationPageComponent implements OnInit {
+  constructor() {}
+  recommendationValue = "";
 
-  constructor() { }
-  recommendationValue=""
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -4,9 +4,9 @@
   <div class="max-w-md w-full bg-white p-6 shadow-lg">
     <div class="w-full min-h-fit items-center">
       <slider-input
-        [question]="'Opacity level'"
-        [min]="80"
-        [max]="100"
+        [question]="question.label"
+        [min]="question.minValue!"
+        [max]="question.maxValue!"
         (valueChange)="onSliderValueChange($event)"
       ></slider-input>
       <button

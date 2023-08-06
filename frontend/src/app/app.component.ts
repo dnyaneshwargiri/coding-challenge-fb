@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { QuestionnaireConfig } from "./models/questionnaire-config.type";
 import { QuestionnaireService } from "./services/questionnaire.service";
 import { CommonService } from "./common/services/common.service";
 
@@ -10,28 +9,15 @@ import { CommonService } from "./common/services/common.service";
 })
 export class AppComponent {
   title = "digitizer";
-  questionnaireConfig: QuestionnaireConfig = { pages: [] };
   questionnaireTitle: string = "";
   showToaster = false;
-  constructor(
-    private questionnaireService: QuestionnaireService,
-    private commonService: CommonService
-  ) {
+
+  constructor(private commonService: CommonService) {
     return;
   }
   ngOnInit() {
-    this.getQuestionnaireConfigById(); 
     this.commonService.toasterVisibility$.subscribe((visibility) => {
       this.showToaster = visibility;
     });
-  }
-
-  public getQuestionnaireConfigById(): void {
-    this.questionnaireService
-      .getQuestionnaireConfig()
-      .subscribe((response: any) => {
-        this.questionnaireTitle = response.data.questionnaireById.title;
-        this.questionnaireConfig = response.data.questionnaireById.pages;
-      });
   }
 }

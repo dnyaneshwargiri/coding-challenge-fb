@@ -7,8 +7,40 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Questionnaire {
-  id    Int    @id
-  title String
-  pages Json
+model QuestionResponseModel {
+  id              Int            @id @default(autoincrement())
+  question        Question       @relation(fields: [questionId], references: [questionId])
+  questionId      Int
+  answer          String
+  UserResponses   UserResponses? @relation(fields: [userResponsesId], references: [responseId])
+  userResponsesId Int?
+}
+
+model Question {
+  questionId            Int                     @id
+  type                  String
+  label                 String
+  options               String[]
+  minValue              Int?
+  maxValue              Int?
+  QuestionResponseModel QuestionResponseModel[]
+}
+
+model Recommendation {
+  id     Int    @id @default(autoincrement())
+  value  String
+  weight Int
+}
+
+model User {
+  userId        Int             @id @default(autoincrement())
+  userName      String
+  UserResponses UserResponses[]
+}
+
+model UserResponses {
+  responseId Int                     @id @default(autoincrement())
+  userId     Int
+  user       User                    @relation(fields: [userId], references: [userId])
+  responses  QuestionResponseModel[]
 }

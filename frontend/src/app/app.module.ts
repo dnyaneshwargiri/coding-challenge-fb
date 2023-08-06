@@ -10,6 +10,7 @@ import { OpacityComponent } from "./components/opacity/opacity.component";
 import { UndergroundComponent } from "./components/underground/underground.component";
 import { RecommendationPageComponent } from "./components/recommendation-page/recommendation-page.component";
 import { AppRoutingModule } from "./routes/app.routing";
+import { MaterialHueComponent } from "./components/material-hue/material-hue.component";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { AppRoutingModule } from "./routes/app.routing";
     ApplicationScopeComponent,
     OpacityComponent,
     UndergroundComponent,
+    MaterialHueComponent,
     RecommendationPageComponent,
   ],
   imports: [

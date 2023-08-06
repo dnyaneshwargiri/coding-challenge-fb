@@ -4,11 +4,13 @@ import { UndergroundComponent } from "../components/underground/underground.comp
 import { OpacityComponent } from "../components/opacity/opacity.component";
 import { RecommendationPageComponent } from "../components/recommendation-page/recommendation-page.component";
 import { NgModule } from "@angular/core";
+import { MaterialHueComponent } from "../components/material-hue/material-hue.component";
 
 const routes: Routes = [
   { path: "", component: ApplicationScopeComponent },
   { path: "underground", component: UndergroundComponent },
   { path: "opacity", component: OpacityComponent },
+  { path: "materialhue", component: MaterialHueComponent },
   { path: "recommendation", component: RecommendationPageComponent },
 ];
 

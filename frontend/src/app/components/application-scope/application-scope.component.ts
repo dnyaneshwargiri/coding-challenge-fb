@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { Question, QuestionResponseModel } from "src/app/models/question-form";
+import { QuestionnaireService } from "src/app/services/questionnaire.service";
 
 @Component({
   selector: "app-application-scope",
@@ -7,18 +9,28 @@ import { Router } from "@angular/router";
   styleUrls: ["./application-scope.component.css"],
 })
 export class ApplicationScopeComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private questionnaireService: QuestionnaireService
+  ) {}
   selectedApplicationScope = "";
-
+  question: Question = {
+    questionId: 1,
+    type: "Radio",
+    label: "What is the scope of application?",
+    options: ["Outside", "Within"],
+  };
   ngOnInit() {}
   onOptionSelected(option: string) {
     this.selectedApplicationScope = option;
   }
 
   onNext() {
-    const formData = {
-      selectedApplicationScope: this.selectedApplicationScope,
+    const formData: QuestionResponseModel = {
+      question: this.question,
+      answer: this.selectedApplicationScope,
     };
-    this.router.navigate(["/underground"], { state: { formData } });
+    this.questionnaireService.addResponse(formData);
+    this.router.navigate(["/underground"]);
   }
 }
