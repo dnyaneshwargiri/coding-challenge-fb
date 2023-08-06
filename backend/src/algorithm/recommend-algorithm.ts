@@ -8,7 +8,6 @@ function getRecommendation(userResponses: {
   // In this example, we assume responses have numerical values for simplicity
   const R: number[][] = [];
   const questionIds: number[] = []; // Keep track of questionIds for later indexing
-
   for (const response of userResponses.responses) {
     const userIdx = userResponses.user.userId;
     const questionIdx = questionIds.indexOf(response.question.questionId);
@@ -20,7 +19,6 @@ function getRecommendation(userResponses: {
     }
     R[userIdx][questionIdx] = parseInt(response.answer); // Convert to numerical value if needed
   }
-  // Perform matrix factorization using any suitable library or custom implementation
   // We can use libraries like SVD or Alternating Least Squares (ALS) for matrix factorization
   // Get the predicted user-item interactions from the factorized matrices
   const predictedInteractions: number[][] = matrixFactorizationAlgorithm(R);
@@ -58,7 +56,6 @@ function matrixFactorizationAlgorithm(
             questionEmbeddings[j],
           );
           const error = R[i][j] - prediction;
-
           for (let k = 0; k < numFeatures; k++) {
             userEmbeddings[i][k] +=
               learningRate * (2 * error * questionEmbeddings[j][k]);
@@ -80,7 +77,6 @@ function matrixFactorizationAlgorithm(
       );
     }
   }
-
   return predictedInteractions;
 }
 

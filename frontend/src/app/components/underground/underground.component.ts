@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { Question, QuestionResponseModel } from "src/app/models/question-form";
 import { QuestionnaireService } from "src/app/services/questionnaire.service";
@@ -8,27 +8,26 @@ import { QuestionnaireService } from "src/app/services/questionnaire.service";
   templateUrl: "./underground.component.html",
   styleUrls: ["./underground.component.css"],
 })
-export class UndergroundComponent implements OnInit {
+export class UndergroundComponent {
   selectedMaterialType: string = "";
   opacityKnown: boolean = false;
-  question1 = {
+  question1: Question = {
     questionId: 2,
     type: "Radio",
     label: "What is the material type?",
     options: ["Wood", "Facade", "Mat", "Putz"],
   };
-  question2 = {
+  question2: Question = {
     questionId: 3,
-    type: "toggle",
+    type: "Toggle",
     label: "Do you know Opacity?",
+    options: ["Yes", "No"],
   };
 
   constructor(
     private router: Router,
     private questionnaireService: QuestionnaireService
   ) {}
-
-  ngOnInit() {}
 
   onOptionSelected(option: string) {
     this.selectedMaterialType = option;

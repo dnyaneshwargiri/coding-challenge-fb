@@ -1,4 +1,4 @@
-import { Question } from '@prisma/client';
+import { Question, QuestionResponseModel } from '@prisma/client';
 import { getRecommendation } from '../../algorithm/recommend-algorithm';
 import prisma from '../../prisma/prismaClient'; // Import the Prisma Client
 import { User, UserResponses } from '../../types/types';
@@ -21,7 +21,7 @@ const resolvers = {
       const userresponses = await prisma.userResponses.create({
         data: {
           userId: args.user.userId,
-          responseId: args.responseId,
+          responses: args.responses as any,
         },
       });
       //get matrix factorization result here
@@ -32,20 +32,19 @@ const resolvers = {
       // console.log('Recommended Color:', recommendedColor);
       return userresponses;
     },
-    addQuestion: async (_parent: any, args: Question) => {
+    createQuestion: async (_parent: any, args: { question: Question }) => {
       const question = await prisma.question.create({
         data: {
-          questionId: args.questionId,
-          label: args.label,
-          type: args.type,
-          options: args.options,
-          minValue: args.minValue,
-          maxValue: args.maxValue,
+          questionId: args.question.questionId,
+          label: args.question.label,
+          type: args.question.type,
+          options: args.question.options,
+          minValue: args.question.minValue,
+          maxValue: args.question.maxValue,
         },
       });
       return question;
     },
-
     createUser: async (_parent: any, args: User) => {
       const userresponses = await prisma.user.create({
         data: {

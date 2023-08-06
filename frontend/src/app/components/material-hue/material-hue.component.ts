@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Router } from "@angular/router";
-import { Question } from "src/app/models/question-form";
+import { Question, QuestionResponseModel } from "src/app/models/question-form";
 import { QuestionnaireService } from "src/app/services/questionnaire.service";
 
 @Component({
@@ -15,7 +15,7 @@ export class MaterialHueComponent {
   ) {}
   selectedVueType = "";
   question: Question = {
-    questionId: 6,
+    questionId: 5,
     type: "Radio",
     label: "What is the vue of material?",
     options: ["Brighter", "Darker"],
@@ -26,11 +26,22 @@ export class MaterialHueComponent {
   }
 
   onNext() {
-    const formData = {
+    const formData: QuestionResponseModel = {
       question: this.question,
       answer: this.selectedVueType,
     };
     this.questionnaireService.addResponse(formData);
-    this.router.navigate(["/recommendation"]);
+    const allResponses = this.questionnaireService.getResponses();
+    const recommendedValue = "Red";
+    this.questionnaireService.getRecommendation(allResponses).subscribe(
+      ({ data }) => {
+        const recommendedColor = data.submitFormData.recommendedColor;
+        console.log("Recommended Color:", recommendedColor);
+      },
+      (error) => {
+        console.error("Error:", error);
+      }
+    );
+    this.router.navigateByUrl(`/recommendation/${recommendedValue}`);
   }
 }

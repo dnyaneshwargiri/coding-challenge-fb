@@ -5,7 +5,6 @@ type QuestionResponseModel {
   id: Int!
   question: Question!
   answer: String!
-  userResponses: UserResponses
 }
 
 type Question {
@@ -27,13 +26,31 @@ type Recommendation {
 type User {
   userId: Int!
   userName: String!
-  userResponses: [UserResponses]
 }
 
+input CreateQuestionInput {
+  questionId: Int!
+  type: String!
+  label: String!
+  options: [String]
+  minValue: Int
+  maxValue: Int
+}
+
+input CreateUserResponsesInput {
+  userId: Int!
+  responses: [JSON]!
+}
 type UserResponses {
   responseId: Int!
   user: User!
-  responses: [QuestionResponseModel]
+  responses: [JSON]!
+}
+scalar JSON
+
+input QuestionResponseInput {
+  questionId: Int!
+  answer: String!
 }
 
 type Query {
@@ -42,9 +59,9 @@ type Query {
 }
 
 type Mutation {
-  addUser(userName: String!): User!
-  addQuestion(question: Question!): Question!
-  addUserResponses(responses: UserResponses): UserResponses
+  createUser(userName: String!): User!
+  createQuestion(question: CreateQuestionInput!): Question!
+  createUserResponses (responses: CreateUserResponsesInput!): UserResponses
 }
 `;
 

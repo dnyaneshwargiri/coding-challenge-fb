@@ -12,7 +12,6 @@ export class RadioInputComponent  {
   selectedOption = "";
   @Output() optionSelected = new EventEmitter<string>();
 
-  ngOnInit() {}
   onOptionSelected() {
     this.optionSelected.emit(this.selectedOption);
   }

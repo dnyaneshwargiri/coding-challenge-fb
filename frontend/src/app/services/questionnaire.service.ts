@@ -2,10 +2,12 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Apollo } from "apollo-angular";
+import { POST_QUESTION_RESPONSES } from "../common/modules/graphql/graphql.operations";
 import {
-  POST_QUESTION_RESPONSES,
-} from "../common/modules/graphql/graphql.operations";
-import { QuestionResponseModel, User } from "../models/question-form";
+  QuestionResponseModel,
+  User,
+  UserResponses,
+} from "../models/question-form";
 
 @Injectable({
   providedIn: "root",
@@ -19,6 +21,7 @@ export class QuestionnaireService {
     userId: 1,
     userName: "Dnyaneshwar",
   };
+
   addResponse(response: QuestionResponseModel) {
     const currentResponses = this.responsesSubject.getValue();
     currentResponses.push(response);
@@ -30,10 +33,16 @@ export class QuestionnaireService {
   }
 
   //From Apollo Server
-  getRecommendation(formData: QuestionResponseModel[]): Observable<any> {
+  getRecommendation(
+    questionResponses: QuestionResponseModel[]
+  ): Observable<any> {
+    const userResponses: UserResponses = {
+      user: this.loggedInUser,
+      responses: questionResponses,
+    };
     return this.apollo.mutate({
       mutation: POST_QUESTION_RESPONSES,
-      variables: { input: formData },
+      variables: { responses: userResponses },
     });
   }
 }

@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { QuestionnaireService } from "./services/questionnaire.service";
 import { CommonService } from "./common/services/common.service";
 
 @Component({
@@ -8,7 +7,6 @@ import { CommonService } from "./common/services/common.service";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-  title = "digitizer";
   questionnaireTitle: string = "";
   showToaster = false;
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-recommendation-page",
@@ -6,8 +7,10 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./recommendation-page.component.css"],
 })
 export class RecommendationPageComponent implements OnInit {
-  constructor() {}
+  constructor(private route: ActivatedRoute) {}
   recommendationValue = "";
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.recommendationValue = this.route.snapshot.params['recommendedValue'];
+  }
 }

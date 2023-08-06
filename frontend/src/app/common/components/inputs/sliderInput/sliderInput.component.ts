@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input,  Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
   selector: "slider-input",
@@ -14,7 +14,7 @@ export class SliderInputComponent {
   opacityValue = 100;
 
   onSliderChange(event: any) {
-    this.opacityValue = parseInt(event.target?.value, 10);    
+    this.opacityValue = parseInt(event.target?.value, 10);
     this.valueChange.emit(this.opacityValue);
   }
 }

@@ -12,7 +12,6 @@ model QuestionResponseModel {
   question        Question       @relation(fields: [questionId], references: [questionId])
   questionId      Int
   answer          String
-  UserResponses   UserResponses? @relation(fields: [userResponsesId], references: [responseId])
   userResponsesId Int?
 }
 
@@ -42,5 +41,5 @@ model UserResponses {
   responseId Int                     @id @default(autoincrement())
   userId     Int
   user       User                    @relation(fields: [userId], references: [userId])
-  responses  QuestionResponseModel[]
+  responses  Json[]
 }

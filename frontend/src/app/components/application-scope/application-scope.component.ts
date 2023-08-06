@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { Question, QuestionResponseModel } from "src/app/models/question-form";
 import { QuestionnaireService } from "src/app/services/questionnaire.service";
@@ -8,7 +8,7 @@ import { QuestionnaireService } from "src/app/services/questionnaire.service";
   templateUrl: "./application-scope.component.html",
   styleUrls: ["./application-scope.component.css"],
 })
-export class ApplicationScopeComponent implements OnInit {
+export class ApplicationScopeComponent {
   constructor(
     private router: Router,
     private questionnaireService: QuestionnaireService
@@ -20,7 +20,7 @@ export class ApplicationScopeComponent implements OnInit {
     label: "What is the scope of application?",
     options: ["Outside", "Within"],
   };
-  ngOnInit() {}
+
   onOptionSelected(option: string) {
     this.selectedApplicationScope = option;
   }

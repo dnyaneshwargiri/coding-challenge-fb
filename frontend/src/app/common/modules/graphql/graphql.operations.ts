@@ -1,9 +1,9 @@
 import { gql } from "apollo-angular";
 
 const POST_QUESTION_RESPONSES = gql`
-  mutation SubmitFormData($input: FormDataInput!) {
-    submitFormData(input: $input) {
-      recommendedColor
+  mutation createUserResponses( $responses: UserResponses!) {
+    createUserResponses(responses: $responses) {
+      responses : responses
     }
   }
 `;

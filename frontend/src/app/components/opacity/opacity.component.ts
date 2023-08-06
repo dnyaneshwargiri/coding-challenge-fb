@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { Question, QuestionResponseModel } from "src/app/models/question-form";
 import { QuestionnaireService } from "src/app/services/questionnaire.service";
@@ -8,20 +8,19 @@ import { QuestionnaireService } from "src/app/services/questionnaire.service";
   templateUrl: "./opacity.component.html",
   styleUrls: ["./opacity.component.css"],
 })
-export class OpacityComponent implements OnInit {
+export class OpacityComponent {
   constructor(
     private router: Router,
     private questionnaireService: QuestionnaireService
   ) {}
   question: Question = {
-    questionId: 5,
-    type: "slider",
+    questionId: 4,
+    type: "Slider",
     label: "Opacity level",
     minValue: 80,
     maxValue: 100,
   };
   selectedOpacity: number = 0;
-  ngOnInit() {}
 
   onSliderValueChange(option: number) {
     this.selectedOpacity = option;
@@ -34,19 +33,16 @@ export class OpacityComponent implements OnInit {
     };
     this.questionnaireService.addResponse(formData);
     const allResponses = this.questionnaireService.getResponses();
-    console.log(allResponses);
+    const recommendedValue = "Red";
     this.questionnaireService.getRecommendation(allResponses).subscribe(
       ({ data }) => {
-        // Handle the response from the backend, e.g., display the recommended color
         const recommendedColor = data.submitFormData.recommendedColor;
         console.log("Recommended Color:", recommendedColor);
       },
       (error) => {
-        // Handle errors if any
         console.error("Error:", error);
       }
     );
-
-    this.router.navigate(["/recommendation"]);
+    this.router.navigateByUrl(`/recommendation/${recommendedValue}`);
   }
 }
