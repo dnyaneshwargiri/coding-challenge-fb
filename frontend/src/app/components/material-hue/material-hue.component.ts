@@ -32,16 +32,14 @@ export class MaterialHueComponent {
     };
     this.questionnaireService.addResponse(formData);
     const allResponses = this.questionnaireService.getResponses();
-    const recommendedValue = "Red";
     this.questionnaireService.getRecommendation(allResponses).subscribe(
       ({ data }) => {
-        const recommendedColor = data.submitFormData.recommendedColor;
-        console.log("Recommended Color:", recommendedColor);
+        const recommendedColor = data.createUserResponses;
+        this.router.navigateByUrl(`/recommendation/${recommendedColor}`);
       },
       (error) => {
         console.error("Error:", error);
       }
     );
-    this.router.navigateByUrl(`/recommendation/${recommendedValue}`);
   }
 }

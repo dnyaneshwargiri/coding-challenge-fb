@@ -23,3 +23,15 @@ export type Question = {
   minValue?: number;
   maxValue?: number;
 };
+
+export type UserResponsesInput={
+  userId: number;
+  responses: QuestionResponseModel[];
+}
+
+export type Recommendation = {
+  id?: number;
+  value: string;
+  weight: number;
+};
+

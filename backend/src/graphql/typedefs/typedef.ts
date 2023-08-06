@@ -47,6 +47,7 @@ type UserResponses {
   responses: [JSON]!
 }
 scalar JSON
+scalar RecommendationOutput
 
 input QuestionResponseInput {
   questionId: Int!
@@ -54,14 +55,16 @@ input QuestionResponseInput {
 }
 
 type Query {
-  getUser(userId: Int!): User
+  getAllUsers : [User]
   getUserResponsesById(responseId: Int!): UserResponses
+  getAllResponses: [UserResponses]
 }
 
 type Mutation {
   createUser(userName: String!): User!
   createQuestion(question: CreateQuestionInput!): Question!
-  createUserResponses (responses: CreateUserResponsesInput!): UserResponses
+  createUserResponses (responsesData: CreateUserResponsesInput!): RecommendationOutput!
+  deleteAllQuestionResponses: Boolean!
 }
 `;
 

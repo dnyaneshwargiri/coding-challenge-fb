@@ -1,44 +1,64 @@
 import { QuestionResponseModel, User } from '../types/types';
 
 function getRecommendation(userResponses: {
-  user: User;
+  userId: number;
   responses: QuestionResponseModel[];
 }): string {
-  // Create a matrix `R` based on user responses
-  // In this example, we assume responses have numerical values for simplicity
-  const R: number[][] = [];
-  const questionIds: number[] = []; // Keep track of questionIds for later indexing
+  // This need to taken from DB based on actual user responses
+  // For sake of demo initializing with random data
+  // Rows : Users
+  // Column : Responses
+  const RESPONSES: number[][] = [
+    [0.1, 0.2, 3, 0, 0, 0.1],
+    [0, 0, 0, 0.4, 0.5, 0.2],
+    [0.3, 0.2, 0, 1, 0, 0.3],
+    [0, 0, 0, 0, 0, 0.4],
+    [0, 0, 0.2, 0, 0.1, 0.5],
+  ];
+  const questionIds: number[] = [];
+  // Separate loop for creating questionIds array
   for (const response of userResponses.responses) {
-    const userIdx = userResponses.user.userId;
-    const questionIdx = questionIds.indexOf(response.question.questionId);
-    if (questionIdx === -1) {
-      questionIds.push(response.question.questionId);
+    const questionId = response.question.questionId;
+    if (!questionIds.includes(questionId)) {
+      questionIds.push(questionId);
     }
-    if (!R[userIdx]) {
-      R[userIdx] = new Array(questionIds.length).fill(0);
+  }
+  // Initialize R matrix with null values
+  for (let i = 0; i < userResponses.responses.length; i++) {
+    const userIdx = userResponses.userId;
+    const response = userResponses.responses[i];
+    const questionId = response.question.questionId;
+    const questionIdx = questionIds.indexOf(questionId);
+    if (!RESPONSES[userIdx]) {
+      RESPONSES[userIdx] = new Array(questionIds.length).fill(null);
     }
-    R[userIdx][questionIdx] = parseInt(response.answer); // Convert to numerical value if needed
+    RESPONSES[userIdx][questionIdx] = Number.isNaN(parseFloat(response.answer))
+      ? 0
+      : parseFloat(response.answer);
   }
   // We can use libraries like SVD or Alternating Least Squares (ALS) for matrix factorization
   // Get the predicted user-item interactions from the factorized matrices
-  const predictedInteractions: number[][] = matrixFactorizationAlgorithm(R);
+  const predictedInteractions: number[][] =
+    matrixFactorizationAlgorithm(RESPONSES);
   // Now, find the color to recommend based on the predicted interactions
-  // This is just an example, you may have your own logic based on the predicted values
+  // This is just an example, we may have our own logic based on the predicted values
   const colorOptions = ['Red', 'Green', 'Blue', 'Yellow', 'Black']; // Example color options
-  const maxInteractionIdx = predictedInteractions[
-    userResponses.user.userId
-  ].indexOf(Math.max(...predictedInteractions[userResponses.user.userId]));
+  console.log(...predictedInteractions[userResponses.userId]);
+  
+  const maxInteractionIdx = predictedInteractions[userResponses.userId].indexOf(
+    Math.max(...predictedInteractions[userResponses.userId]),
+  );
   return colorOptions[maxInteractionIdx];
 }
 
 function matrixFactorizationAlgorithm(
-  R: any,
+  RESPONSES: any,
   numFeatures = 5,
   learningRate = 0.001,
   iterations = 100,
 ) {
-  const numRows = R.length;
-  const numCols = R[0].length;
+  const numRows = RESPONSES.length;
+  const numCols = RESPONSES[1].length;
   // Randomly initialize user and question embeddings
   let userEmbeddings = new Array(numRows)
     .fill(0)
@@ -50,12 +70,12 @@ function matrixFactorizationAlgorithm(
   for (let iter = 0; iter < iterations; iter++) {
     for (let i = 0; i < numRows; i++) {
       for (let j = 0; j < numCols; j++) {
-        if (R[i][j] !== null) {
+        if (RESPONSES[i][j] !== null) {
           const prediction = predictRating(
             userEmbeddings[i],
             questionEmbeddings[j],
           );
-          const error = R[i][j] - prediction;
+          const error = RESPONSES[i][j] - prediction;
           for (let k = 0; k < numFeatures; k++) {
             userEmbeddings[i][k] +=
               learningRate * (2 * error * questionEmbeddings[j][k]);

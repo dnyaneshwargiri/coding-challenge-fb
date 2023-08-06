@@ -1,7 +1,7 @@
-import { Question, QuestionResponseModel } from '@prisma/client';
+import { Question } from '@prisma/client';
 import { getRecommendation } from '../../algorithm/recommend-algorithm';
 import prisma from '../../prisma/prismaClient'; // Import the Prisma Client
-import { User, UserResponses } from '../../types/types';
+import { User, UserResponses, UserResponsesInput } from '../../types/types';
 
 // A map of functions which return data for the schema.
 const resolvers = {
@@ -15,22 +15,32 @@ const resolvers = {
       });
       return userresponses;
     },
+    getAllUsers: async () => {
+      const users = await prisma.user.findMany({});
+      return users;
+    },
+    getAllResponses: async () => {
+      const responses = await prisma.userResponses.findMany({});
+      return responses;
+    },
   },
   Mutation: {
-    createUserResponses: async (_parent: any, args: UserResponses) => {
+    createUserResponses: async (
+      _parent: any,
+      args: { responsesData: UserResponsesInput },
+    ) => {
       const userresponses = await prisma.userResponses.create({
         data: {
-          userId: args.user.userId,
-          responses: args.responses as any,
+          userId: args.responsesData.userId,
+          responses: args.responsesData.responses as any,
         },
       });
-      //get matrix factorization result here
-      // const recommendedColor = await getRecommendation({
-      //   user: args.user,
-      //   responses: userresponses,
-      // });
-      // console.log('Recommended Color:', recommendedColor);
-      return userresponses;
+      // Get matrix recommendation result here
+      const recommendedColor: string = await getRecommendation({
+        userId: args.responsesData.userId,
+        responses: userresponses.responses as any,
+      });
+      return recommendedColor;
     },
     createQuestion: async (_parent: any, args: { question: Question }) => {
       const question = await prisma.question.create({
@@ -46,12 +56,20 @@ const resolvers = {
       return question;
     },
     createUser: async (_parent: any, args: User) => {
-      const userresponses = await prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           userName: args.userName,
         },
       });
-      return userresponses;
+      return user;
+    },
+    deleteAllQuestionResponses: async () => {
+      try {
+        await prisma.userResponses.deleteMany({});
+        return true;
+      } catch (error) {
+        console.error('Error deleting question responses:', error);
+      }
     },
   },
 };

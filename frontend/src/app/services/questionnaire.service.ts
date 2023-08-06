@@ -6,7 +6,6 @@ import { POST_QUESTION_RESPONSES } from "../common/modules/graphql/graphql.opera
 import {
   QuestionResponseModel,
   User,
-  UserResponses,
 } from "../models/question-form";
 
 @Injectable({
@@ -36,13 +35,15 @@ export class QuestionnaireService {
   getRecommendation(
     questionResponses: QuestionResponseModel[]
   ): Observable<any> {
-    const userResponses: UserResponses = {
-      user: this.loggedInUser,
+    const userResponse = {
+      userId: this.loggedInUser.userId,
       responses: questionResponses,
     };
     return this.apollo.mutate({
       mutation: POST_QUESTION_RESPONSES,
-      variables: { responses: userResponses },
+      variables: {
+        userResponse: userResponse,
+      },
     });
   }
 }
