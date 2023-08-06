@@ -32,7 +32,7 @@ const resolvers = {
       const userresponses = await prisma.userResponses.create({
         data: {
           userId: args.responsesData.userId,
-          responses: args.responsesData.responses as any,
+          responses: args.responsesData.responses,
         },
       });
       // Get matrix recommendation result here

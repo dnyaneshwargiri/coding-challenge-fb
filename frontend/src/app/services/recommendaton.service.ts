@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, map } from "rxjs";
 import { Apollo } from "apollo-angular";
 import { POST_QUESTION_RESPONSES } from "../common/modules/graphql/graphql.operations";
 import {
   QuestionResponseModel,
+  RecommendationOutput,
   User,
 } from "../models/question-form";
 
@@ -34,16 +35,22 @@ export class RecommendationService {
   //From Apollo Server
   getRecommendation(
     questionResponses: QuestionResponseModel[]
-  ): Observable<any> {
+  ): Observable<string> {
     const userResponse = {
       userId: this.loggedInUser.userId,
       responses: questionResponses,
     };
-    return this.apollo.mutate({
-      mutation: POST_QUESTION_RESPONSES,
-      variables: {
-        userResponse: userResponse,
-      },
-    });
+    return this.apollo
+      .mutate({
+        mutation: POST_QUESTION_RESPONSES,
+        variables: {
+          userResponse: userResponse,
+        },
+      })
+      .pipe(
+        map((result: any) => {
+          return result.data.createUserResponses as string;
+        })
+      );
   }
 }

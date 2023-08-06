@@ -51,7 +51,7 @@ function getRecommendation(userResponses: {
 }
 
 function matrixFactorizationAlgorithm(
-  RESPONSES: any,
+  RESPONSES: number[][],
   numFeatures = 5,
   learningRate = 0.001,
   iterations = 100,
@@ -100,9 +100,10 @@ function matrixFactorizationAlgorithm(
 }
 
 // Predict rating using dot product of user and question embeddings
-function predictRating(userEmbedding: any, questionEmbedding: any) {
+function predictRating(userEmbedding: number[], questionEmbedding: number[]) {
   return userEmbedding.reduce(
-    (sum: any, value: any, idx: any) => sum + value * questionEmbedding[idx],
+    (sum: number, value: number, idx: number) =>
+      sum + value * questionEmbedding[idx],
     0,
   );
 }

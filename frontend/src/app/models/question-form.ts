@@ -29,3 +29,7 @@ export type UserResponses = {
   user: User;
   responses: QuestionResponseModel[];
 };
+
+export type RecommendationOutput = {
+  createUserResponses: string;
+};
